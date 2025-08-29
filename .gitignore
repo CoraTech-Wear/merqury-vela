@@ -1,0 +1,10 @@
+/.nyc_output
+/coverage
+/node_modules
+/sign
+/dist
+/build
+.husky/
+
+.DS_Store
+**/.DS_Store

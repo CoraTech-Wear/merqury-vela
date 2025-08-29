@@ -1,0 +1,13 @@
+<script>
+import * as ui from "./ui/ui"
+
+export default {
+  onCreate() {
+    console.log("app created")
+    ui.Init();
+  },
+  onDestroy() {
+    console.log("app destroyed")
+  }
+}
+</script>

@@ -1,0 +1,21 @@
+<import name="switch-bar" src="@components/SwitchBar/SwitchBar.ux"></import>
+
+<template>
+  <div class="page">
+    <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
+      <text class="title">欢迎</text>
+    </scroll>
+  </div>
+</template>
+
+<script>
+import router from "@system.router"
+
+export default {
+
+}
+</script>
+
+<style lang="less">
+@import '@less/global.less';
+</style>
