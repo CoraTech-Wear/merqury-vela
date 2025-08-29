@@ -3,7 +3,7 @@
 <template>
   <div class="page">
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
-      <text class="title">欢迎</text>
+      <switch-bar title="消息列表"></switch-bar>
     </scroll>
   </div>
 </template>

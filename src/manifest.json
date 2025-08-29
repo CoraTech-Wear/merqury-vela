@@ -10,6 +10,36 @@
   ],
   "features": [
     {
+      "name": "system.fetch"
+    },
+    {
+      "name": "system.storage"
+    },
+    {
+      "name": "system.crypto"
+    },
+    {
+      "name": "system.device"
+    },
+    {
+      "name": "system.folme"
+    },
+    {
+      "name": "system.interconnect"
+    },
+    {
+      "name": "system.prompt"
+    },
+    {
+      "name": "system.network"
+    },
+    {
+      "name": "system.file"
+    },
+    {
+      "name": "system.request"
+    },
+    {
       "name": "system.router"
     }
   ],
@@ -22,9 +52,6 @@
     "pages": {
       "pages/index": {
         "component": "index"
-      },
-      "pages/detail": {
-        "component": "detail"
       }
     }
   }

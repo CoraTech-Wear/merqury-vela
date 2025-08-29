@@ -13,7 +13,7 @@ const buildInfoContent = `
   export const GIT_COMMIT_HASH = "${gitCommitHash}";
   export const BUILD_TIME = "${buildTime}";
   export const BUILD_USER = "${username}";
-  export const DESIGN_WIDTH = ${designWidth};
+  export const DESIGN_WIDTH = "${designWidth}";
 `;
 
 const buildInfoPath = path.resolve(__dirname, 'src/buildinfo.ts');
