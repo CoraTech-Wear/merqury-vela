@@ -18,7 +18,7 @@
         ontouchmove="touchmove"
         ontouchend="touchend"
       >
-        <div for="{{ recent_msg }}" class="item">
+        <div for="{{ recent_msg }}" class="item" onclick="openChat($item)">
           <div class="line">
             <better-online-image
               border-radius="99px"
@@ -47,7 +47,9 @@
 <script>
 //小米傻逼linter你完了
 import {getAvatarUrl} from "../../qq/avatarHelper"
-import {get_messages_preview} from "../../qq/message"
+import {getMessagesPreview} from "../../qq/message"
+
+import router from "@system.router"
 
 export default {
   private: {
@@ -64,7 +66,17 @@ export default {
     return getAvatarUrl(msg.chatType, msg.peerUin)
   },
   getPreview(msg) {
-    return get_messages_preview(msg.message)
+    return getMessagesPreview(msg.message)
+  },
+  openChat(msg) {
+    router.push({
+      uri: "pages/chat",
+      params: {
+        chatTargetName: msg.peerName,
+        chatTargetId: msg.peerUin,
+        chatType: msg.chatType
+      }
+    })
   },
   async gRC() {
     this.recent_msg = (await global.qq.List.getRecentContact()).data

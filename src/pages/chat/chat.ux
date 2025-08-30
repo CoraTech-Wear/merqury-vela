@@ -1,0 +1,41 @@
+<import name="title-bar" src="@components/TitleBar/TitleBar.ux"></import>
+<import name="qq-message" src="@components/QQComps/Message/Message.ux"></import>
+
+<template>
+  <div class="page">
+    <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
+        <title-bar title="{{ chatTargetName }}"></title-bar>
+        <scroll id="msgscroll" class="list" scroll-y="true" bounces="true" if="{{ messages }}">
+            <qq-message for="{{ messages }}" msg="{{ $item }}"></qq-message>
+        </scroll>
+    </scroll>
+    <image style="position: absolute; top: 208px" src="/common/loading_reversed.gif" if="{{ !messages }}"></image>
+  </div>
+</template>
+
+<script>
+export default {
+  public: {
+    chatTargetName: "聊天",
+    chatTargetId: 10001,
+    chatType: 1
+  },
+  private: {
+    scrclass: "",
+    messages: null
+  },
+  async loadMessages(){
+    if (this.chatType == 2){
+        this.messages = (await global.qq.Message.getGroupMessageHistory(this.chatTargetId)).data.messages;
+    }
+  },
+  onInit(){
+    global.logger.log(`Load: ${this.chatTargetName} ${this.chatTargetId} ${this.chatType}`)
+    this.loadMessages();
+  }
+}
+</script>
+
+<style lang="less">
+@import "@less/global.less";
+</style>

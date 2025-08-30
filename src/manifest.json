@@ -65,6 +65,9 @@
       },
       "pages/arealist": {
         "component": "arealist"
+      },
+      "pages/chat": {
+        "component": "chat"
       }
     }
   }
