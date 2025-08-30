@@ -25,14 +25,16 @@
                 <text elif="{{$item.type === 'at'}}">@{{$item.data.qq}}</text>
                 <div elif="{{$item.type === 'image'}}">
                     <better-online-image
-                        width="100px"
-                        src="{{$item.data.file}}"
-                        cacheTime="86400000"
+                        width="300px"
+                        src="{{$item.data.url}}"
+                        border-radius="36px"
+                        cache-time="86400000"
                     >
                     </better-online-image>
                 </div>
                 <text elif="{{$item.type === 'face'}}">[表情]</text>
                 <text elif="{{$item.type === 'record'}}">[语音]</text>
+                <text elif="{{$item.type === 'file'}}">[文件 {{$item.data.file}}]</text>
                 <text else>[该消息暂不支持展示]</text>
             </div>
         </div>

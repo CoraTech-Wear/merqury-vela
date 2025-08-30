@@ -28,8 +28,21 @@ export default {
     if (this.chatType == 2){
         this.messages = (await global.qq.Message.getGroupMessageHistory(this.chatTargetId)).data.messages;
     }
+
+    setTimeout(() => {
+        this.$element('msgscroll').getScrollRect({
+            success: ({ width, height }) => {
+                this.$element('msgscroll').scrollTo({
+                    top: height + 500
+                })
+            },
+            fail: (f) => {
+                console.error(f)
+            }
+        });
+    }, 500) // 也许它可能需要一些渲染时间 我不知道 但好像真是
   },
-  onInit(){
+  onReady(){
     global.logger.log(`Load: ${this.chatTargetName} ${this.chatTargetId} ${this.chatType}`)
     this.loadMessages();
   }
