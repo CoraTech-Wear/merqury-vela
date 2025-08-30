@@ -4,7 +4,7 @@
   <div class="page">
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
       <title-bar title="组件测试"></title-bar>
-
+      
     </scroll>
   </div>
 </template>
