@@ -1,10 +1,13 @@
 <script>
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 
-import logger from "./logger/logger"
-import * as qq from "./qq/index"
-import { Config } from "./config"
-import * as ui from "./ui/ui"
+import { Config } from "./config";
+import logger from "./logger/logger";
+import * as qq from "./qq/index";
+import * as ui from "./ui/ui";
+
+let resolve;
+global.ready = new Promise(res=> resolve = res);
 
 export default {
   dayjs: dayjs,
@@ -23,6 +26,8 @@ export default {
 
     logger.log("load napcat qq module");
     global.qq = qq;
+
+    resolve();
   },
   onDestroy() {
     console.log("app destroyed");
