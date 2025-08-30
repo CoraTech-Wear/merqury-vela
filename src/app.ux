@@ -33,8 +33,19 @@ export default {
   onDestroy() {
     console.log("app destroyed");
   },
-  getTimestampHHMM(timestamp) {
-    return dayjs(timestamp > 1e10 ? timestamp : timestamp * 1000).format("HH:mm");
+  getTimestampStr(timestamp) {
+    const targetTime = dayjs(timestamp > 1e10 ? timestamp : timestamp * 1000);
+    const now = dayjs();
+    const isThisYear = now.year() === targetTime.year();
+    const isWithin24Hours = now.diff(targetTime, 'hour') < 24;
+
+    if (isWithin24Hours) {
+      return targetTime.format("HH:mm");
+    } else if (isThisYear) {
+      return targetTime.format("MM-DD");
+    } else {
+      return targetTime.format("YYYY-MM-DD");
+    }
   }
 }
 </script>

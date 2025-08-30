@@ -4,17 +4,25 @@
   <div class="page">
     <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
       <switch-bar title="消息列表"></switch-bar>
-      <image if="{{!recent_msg}}" style="margin-top: 140px" src="/common/loading_reversed_transparent.gif"></image>
-      <scroll if="{{recent_msg}}" scroll-y="true" class="list" bounces="true">
+      <image
+        if="{{ !recent_msg }}"
+        style="margin-top: 140px"
+        src="/common/loading_reversed_transparent.gif"
+      ></image>
+      <scroll if="{{ recent_msg }}" scroll-y="true" class="list" bounces="true">
         <div for="{{ recent_msg }}" class="item">
           <div class="line">
-            <image alt="/common/loading_reversed_transparent.gif" src="{{ getAvatar($item) }}" class="avatar"></image>
+            <image
+              alt="/common/loading_reversed_transparent.gif"
+              src="{{ getAvatar($item) }}"
+              class="avatar"
+            ></image>
             <text class="title">{{ $item.peerName }}</text>
-            <text class="time">{{ $app.$def.getTimestampHHMM($item.msgTime) }}</text>
+            <text class="time">{{ $app.$def.getTimestampStr($item.msgTime) }}</text>
           </div>
           <div class="line">
             <text class="content">
-              {{ $item.lastestMsg.sender.nickname }}: {{ $item.lastestMsg.raw_message }}
+              {{ $item.lastestMsg.sender.nickname }}: {{ getPreview($item.lastestMsg) }}
             </text>
           </div>
         </div>
@@ -24,7 +32,9 @@
 </template>
 
 <script>
-import { getAvatarUrl } from "../../qq/avatarHelper"
+//小米傻逼linter你完了
+import {getAvatarUrl} from "../../qq/avatarHelper"
+import {get_messages_preview} from "../../qq/message"
 
 export default {
   private: {
@@ -32,7 +42,10 @@ export default {
     recent_msg: null
   },
   getAvatar(msg) {
-    return getAvatarUrl(msg.chatType, msg.peerUin);
+    return getAvatarUrl(msg.chatType, msg.peerUin)
+  },
+  getPreview(msg) {
+    return get_messages_preview(msg.message)
   },
   async gRC() {
     this.recent_msg = (await global.qq.List.getRecentContact()).data
@@ -54,13 +67,14 @@ export default {
   height: 116px;
   background-color: #262626;
   flex-direction: column;
-  max-width: 336px;
+  max-width: 400px;
   border-radius: 36px;
   padding: 16px;
   margin-top: 10px;
 }
 .title {
   font-size: 32px;
+  flex: 1;
   lines: 1;
   text-overflow: ellipsis;
   white-space: nowrap;

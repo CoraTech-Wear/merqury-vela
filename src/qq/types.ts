@@ -11,7 +11,7 @@ export interface Message {
     raw_message: string,
     font: number,
     sub_type: string,
-    message: any,
+    message: Messages[],
     message_format: string,
     post_type: string,
     group_id: number
@@ -36,4 +36,21 @@ export enum Role {
     "owner",
     "admin",
     "member"
+}
+
+export interface Messages{
+    type: MessageType,
+    data: any
+}
+
+export enum MessageType{
+    text = "text",
+    at = "at",
+    face = "face",
+    video = "video",
+    image = "image",
+    forward = "forward",
+    reply = "reply",
+    record = "record",
+    json = "json"
 }
