@@ -33,7 +33,8 @@ export default {
         this.$element('msgscroll').getScrollRect({
             success: ({ width, height }) => {
                 this.$element('msgscroll').scrollTo({
-                    top: height + 500
+                    top: height,
+                    behavior: "instant"
                 })
             },
             fail: (f) => {
