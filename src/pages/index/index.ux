@@ -51,8 +51,8 @@
 
 <script>
 //小米傻逼linter你完了
-import {getAvatarUrl} from "../../qq/avatarHelper"
-import {get_messages_preview} from "../../qq/message"
+import { getAvatarUrl } from "../../qq/avatarHelper";
+import { get_messages_preview } from "../../qq/message";
 
 const pageSize = 5
 const itemHeight = 126
@@ -202,6 +202,7 @@ export default {
   flex: 1;
   lines: 1;
   margin-left: 10px;
+  font-weight: bold;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
