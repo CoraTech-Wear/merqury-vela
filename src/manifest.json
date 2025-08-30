@@ -55,6 +55,15 @@
       },
       "pages/index": {
         "component": "index"
+      },
+      "pages/errors/bandnotsupport": {
+        "component": "bandnotsupport"
+      },
+      "pages/test/comptest": {
+        "component": "comptest"
+      },
+      "pages/arealist": {
+        "component": "arealist"
       }
     }
   }

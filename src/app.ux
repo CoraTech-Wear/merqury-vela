@@ -23,6 +23,7 @@ export default {
 
     logger.log("init ui animation system");
     ui.Init();
+    global.ui = ui;
 
     logger.log("load napcat qq module");
     global.qq = qq;

@@ -37,7 +37,7 @@ export default {
     var pagename = router.getState().name.split("/")
 
     router.push({
-      uri: "pages/app/arealist",
+      uri: "pages/arealist",
       params: {
         lastpage: pagename[pagename.length - 1]
       }

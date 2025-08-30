@@ -1,0 +1,22 @@
+<template>
+  <div class="page">
+    <scroll
+      scroll-y="true"
+      class="scroll {{ scrclass }}"
+      bounces="true"
+      style="justify-content: center; align-items: center"
+    >
+      <div>
+        <text>不支持手环设备，建议使用搭载Xring芯片的手表产品运行</text>
+      </div>
+    </scroll>
+  </div>
+</template>
+
+<script>
+export default {}
+</script>
+
+<style lang="less">
+@import "@less/global.less";
+</style>
