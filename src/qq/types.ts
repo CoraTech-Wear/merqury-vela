@@ -54,3 +54,12 @@ export enum MessageType{
     record = "record",
     json = "json"
 }
+
+export interface NapCatResponse<T>{
+    status:string,
+    retcode:number,
+    data:T,
+    message:string,
+    echo:string|null,
+    wording:string
+}

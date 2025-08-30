@@ -1,6 +1,7 @@
 import { fetch } from "../tsimports";
+import { NapCatResponse } from "./types";
 
-export async function sendNapCatPostRequest(api: string, params: any): Promise<any> {
+export async function sendNapCatPostRequest<T>(api: string, params: any): Promise<NapCatResponse<T>> {
     let baseUrl = global.config.read(c => c.napcat_httpserver_url);
     let token = global.config.read(c => c.napcat_httpserver_token);
 
@@ -17,7 +18,7 @@ export async function sendNapCatPostRequest(api: string, params: any): Promise<a
                 "Content-Type": "application/json"
             }
         });
-        return promiseRet.data;
+        return (promiseRet.data.data as NapCatResponse<T>);
     } catch (err) {
         global.logger.error(`NapCat Post request failed: ${err}`);
         throw err;

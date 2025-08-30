@@ -20,7 +20,15 @@
                     <text class="sender-bar-text" style="color: {{getSenderRoleBarTextColor(msg.sender.role)}}">{{getSenderRoleBarText(msg.sender.role)}}</text>
                 </div>
             </div>
-            <div class="box {{isSelf() ? 'self-box' : ''}}" for="{{msg.message}}">
+            <div class="box {{isSelf() ? 'self-box' : ''}}">
+            <div if="{{reply_name}}" class="reply-box">
+              <div style="flex-direction: row;justify-content:space-between">
+                <text class="reply-1">{{reply_name}}</text>
+                <text class="reply-1" style="flex-shrink: 0;">{{reply_time}}</text>
+              </div>
+              <text class="reply-msg">{{reply_msg}}</text>
+            </div>
+            <div for="{{msg.message}}">
                 <text if="{{$item.type === 'text'}}" style="font-size: 32px; font-weight: 500; {{isSelf() ? 'text-align: right' : ''}}">{{$item.data.text}}</text>
                 <text elif="{{$item.type === 'at'}}">@{{$item.data.qq}}</text>
                 <div elif="{{$item.type === 'image'}}">
@@ -35,8 +43,9 @@
                 <text elif="{{$item.type === 'face'}}">[表情]</text>
                 <text elif="{{$item.type === 'record'}}">[语音]</text>
                 <text elif="{{$item.type === 'file'}}">[文件 {{$item.data.file}}]</text>
-                <text else>[该消息暂不支持展示]</text>
+                <text elif="{{$item.type !== 'reply'}}">[该消息暂不支持显示]</text>
             </div>
+        </div>
         </div>
     </div>
 </template>
@@ -44,6 +53,19 @@
 <script>
 export default {
     props: ["msg"],
+    data:{
+      reply_name:null,
+      reply_msg:null,
+      reply_time:null,
+    },
+    async onInit() {
+      if(this.msg.message[0].type === 'reply'){
+        const reply = (await global.qq.Message.getMessage(this.msg.message[0].data.id)).data
+        this.reply_name = reply.sender.nickname
+        this.reply_msg = global.qq.Message.getMessagesPreview(reply.message)
+        this.reply_time = this.$app.$def.getTimestampStr(reply.time)
+      }
+    },
     isSelf() {
         return this.msg.self_id === this.msg.user_id;
     },
@@ -76,7 +98,25 @@ export default {
     width: 400px;
     flex-direction: column;
 }
-
+.reply-box {
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    flex-direction: column;
+}
+.reply-1 {
+    font-size: 24px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    lines:1;
+    text-overflow: ellipsis;
+}
+.reply-msg {
+    font-size: 24px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
 .message {
     max-width: 400px;
     flex-direction: column;
@@ -118,7 +158,8 @@ export default {
 }
 
 .box {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     padding: 16px;
     background-color: #262626;
     border-radius: 36px;

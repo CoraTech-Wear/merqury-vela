@@ -9,7 +9,7 @@ export function getMessagesPreview(msg: Messages[]) {
                 preview += m.data.text
                 break;
             case MessageType.at:
-                preview += `@${m.data.name}`
+                preview += `@${m.data.name??m.data.qq}`
                 break;
             case MessageType.face:
                 preview += `[表情]`
@@ -38,10 +38,16 @@ export function getMessagesPreview(msg: Messages[]) {
     return preview
 }
 
-export async function getGroupMessageHistory(id: string, messageSeq: string, count: number) {
+export async function getGroupMessageHistory(id: string, messageSeq: string, count: number=10) {
     return (await sendNapCatPostRequest("/get_group_msg_history", {
         group_id: id,
         message_seq: messageSeq,
         count
-    })).data;
+    }));
+}
+
+export async function getMessage(id: string){
+    return (await sendNapCatPostRequest("/get_msg", {
+        message_id: id
+    }));
 }
