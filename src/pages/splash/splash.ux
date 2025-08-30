@@ -1,0 +1,27 @@
+<template>
+  <div class="page">
+    <image src="/common/logo.png"></image>
+  </div>
+</template>
+
+<script>
+import router from "@system.router"
+
+export default {
+    onInit(){
+        setTimeout(() => {
+            router.replace({
+                uri: "pages/index"
+            })
+        }, 1500);
+    }
+}
+</script>
+
+<style lang="less">
+@import '@less/global.less';
+
+.page {
+    justify-content: center;
+}
+</style>

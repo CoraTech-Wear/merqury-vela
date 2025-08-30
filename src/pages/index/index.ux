@@ -4,6 +4,9 @@
   <div class="page">
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
       <switch-bar title="消息列表"></switch-bar>
+      <div for="{{recent_msg}}">
+        <text>{{$item.peerName}}</text>
+      </div>
     </scroll>
   </div>
 </template>
@@ -12,7 +15,22 @@
 import router from "@system.router"
 
 export default {
-
+  private: {
+    recent_msg: null
+  },
+  async gRC(){
+    this.recent_msg = (await global.qq.List.getRecentContact()).data;
+    console.log(this.recent_msg)
+  },
+  onInit(){
+    global.logger.log("gRC")
+    try {
+      this.gRC()
+    }
+    catch(e) {
+      global.logger.error(e)
+    }
+  }
 }
 </script>
 

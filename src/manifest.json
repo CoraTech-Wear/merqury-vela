@@ -48,8 +48,11 @@
     "designWidth": "device-width"
   },
   "router": {
-    "entry": "pages/index",
+    "entry": "pages/splash",
     "pages": {
+      "pages/splash": {
+        "component": "splash"
+      },
       "pages/index": {
         "component": "index"
       }
