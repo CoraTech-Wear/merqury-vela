@@ -1,12 +1,10 @@
-<import name="switch-bar" src="@components/SwitchBar/SwitchBar.ux"></import>
+<import name="title-bar" src="@components/TitleBar/TitleBar.ux"></import>
 
 <template>
   <div class="page">
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
-      <switch-bar title="消息列表"></switch-bar>
-      <div for="{{recent_msg}}">
-        <text>{{$item.peerName}}</text>
-      </div>
+      <title-bar title="组件测试"></title-bar>
+
     </scroll>
   </div>
 </template>
@@ -16,7 +14,6 @@ import router from "@system.router"
 
 export default {
   private: {
-    scrclass: "",
     recent_msg: null
   },
   async gRC(){
