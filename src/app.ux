@@ -5,6 +5,7 @@ import { Config } from "./config";
 import logger from "./logger/logger";
 import * as qq from "./qq/index";
 import * as ui from "./ui/ui";
+import * as tools from "./tools";
 
 let resolve;
 global.ready = new Promise(res=> resolve = res);
@@ -20,6 +21,8 @@ export default {
     logger.log("init config system");
     await Config.init();
     global.config = Config;
+
+    global.DEVICE_INFO = await tools.getDeviceInformation()
 
     logger.log("init ui animation system");
     ui.Init();

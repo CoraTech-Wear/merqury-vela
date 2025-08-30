@@ -1,6 +1,7 @@
+import { sendNapCatPostRequest } from "./request";
 import { Messages, MessageType } from "./types";
 
-export function get_messages_preview(msg: Messages[]) {
+export function getMessagesPreview(msg: Messages[]) {
     let preview = ""
     for (let m of msg) {
         switch (m.type) {
@@ -35,4 +36,12 @@ export function get_messages_preview(msg: Messages[]) {
         }
     }
     return preview
+}
+
+export async function getGroupMessageHistory(id: string, messageSeq: string, count: number) {
+    return (await sendNapCatPostRequest("/get_group_msg_history", {
+        group_id: id,
+        message_seq: messageSeq,
+        count
+    })).data;
 }
