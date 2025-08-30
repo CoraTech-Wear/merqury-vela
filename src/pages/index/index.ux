@@ -16,32 +16,34 @@
       ontouchend="touchend"
     >
       <switch-bar title="消息列表"></switch-bar>
-      <div style="height:{{ 126 *recent_msg.length }}px"></div>
-      <div
-        for="{{ virtualList }}"
-        style="position: absolute; top: {{ $item.offset }}px;{{ getScale($item.offset) }}"
-        class="item"
-        tid="$item.item.msgId"
-        onclick="openChat($item.item)"
-      >
-        <div class="line">
-          <better-online-image
-            border-radius="99px"
-            width="42px"
-            height="42px"
-            cacheTime="86400000"
-            src="{{ getAvatar($item.item) }}"
-          ></better-online-image>
-          <!-- 一天 -->
-          <text class="title">{{ $item.item.peerName }}</text>
-          <text class="time">{{ $app.$def.getTimestampStr($item.item.msgTime) }}</text>
+      <div for="{{ virtualList }}" tid="$item.item.msgId">
+        <div
+          style="{{ getScale($item.offset) }}"
+          class="item"
+          onclick="openChat($item.item)"
+          if="{{ shouldShow($item) }}"
+        >
+          <div class="line">
+            <better-online-image
+              border-radius="99px"
+              width="42px"
+              height="42px"
+              cache-time="86400000"
+              src="{{ getAvatar($item.item) }}"
+            ></better-online-image>
+            <!-- 一天 -->
+            <text class="title">{{ $item.item.peerName }}</text>
+            <text class="time">{{ $app.$def.getTimestampStr($item.item.msgTime) }}</text>
+          </div>
+          <div class="line">
+            <text class="content">
+              {{ $item.item.lastestMsg.sender.nickname }}: {{ getPreview($item.item.lastestMsg) }}
+            </text>
+          </div>
         </div>
-        <div class="line">
-          <text class="content">
-            {{ $item.item.lastestMsg.sender.nickname }}: {{ getPreview($item.item.lastestMsg) }}
-          </text>
-        </div>
+        <div class="item" else></div>
       </div>
+
       <text class="refresh" style="top:{{ refreshTop }}px;" show="{{ refreshTop>-50 }}">
         {{ refreshText }}
       </text>
@@ -52,15 +54,15 @@
 
 <script>
 //小米傻逼linter你完了
-import { getAvatarUrl } from "../../qq/avatarHelper";
-import { get_messages_preview } from "../../qq/message";
+import {getAvatarUrl} from "../../qq/avatarHelper"
+import {get_messages_preview} from "../../qq/message"
 
-const pageSize = 5
+//const pageSize = 7
 const itemHeight = 126
 const headerHeight = 90
-const debounceTime = 100
-let offset = 0
-let debounceTimer = null
+//const debounceTime = 100
+//let offset = 0
+//let debounceTimer = null
 
 export default {
   private: {
@@ -83,8 +85,11 @@ export default {
     return get_messages_preview(msg.message)
   },
   getScale(offset) {
-    // 提前计算公共变量，减少重复计算
-    const scrollY = this.scrollY
+    const scrollY = this.scrollY /*
+
+    if (offset + itemHeight < scrollY || offset > scrollY + 466) {
+      return `scale:0.5;transform-origin: 200px 116px;`
+    } */
     const halfItemHeight = itemHeight / 2
 
     let scaleValue
@@ -102,6 +107,9 @@ export default {
 
     return `scale:${scaleValue};transform-origin: ${transformOrigin};`
   },
+  shouldShow(item) {
+    return item.offset + itemHeight > this.scrollY && item.offset < this.scrollY + 466
+  },
   async gRC() {
     this.recent_msg = (await global.qq.List.getRecentContact()).data
     this.loading = false
@@ -115,7 +123,7 @@ export default {
     }
   },
   updateVirtualList(offset) {
-    this.virtualList = this.recent_msg.slice(offset, offset + pageSize).map((item, index) => {
+    this.virtualList = this.recent_msg.map((item, index) => {
       return {
         item,
         offset: (offset + index) * itemHeight + headerHeight
@@ -129,8 +137,8 @@ export default {
     } else {
       this.scrollToppd = false
     }
-    const newOffset = Math.max(0, Math.floor((scrollY - headerHeight) / itemHeight))
-    /* if (newOffset - offset > 0 || offset - newOffset > 1) { */
+    /* const newOffset = Math.max(0, Math.floor((scrollY - headerHeight) / itemHeight))
+    if (newOffset - offset > 2 || offset - newOffset > 0) {
     if (debounceTimer) {
       clearTimeout(debounceTimer)
     }
@@ -138,7 +146,7 @@ export default {
       offset = newOffset
       this.updateVirtualList(offset)
     }, debounceTime)
-    /* } */
+    } */
   },
   scrolltop() {
     this.scrollToppd = true
