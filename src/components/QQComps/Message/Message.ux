@@ -1,0 +1,27 @@
+<template>
+    <div class="base">
+        <div></div>
+    </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "@uxls/types";
+import { Message } from "../../../qq/types";
+
+export default defineComponent({
+    props: {
+        msg: {
+            type: Object as () => Message,
+            required: true
+        }
+    }
+})
+</script>
+
+<style lang="less">
+@import "@less/global.less";
+
+.base {
+    width: 360px;
+}
+</style>
