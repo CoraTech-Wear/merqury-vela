@@ -128,11 +128,11 @@ export default {
   async gRC() {
     this.recent_msg = (await global.qq.List.getRecentContact()).data
     this.loading = false
+    this.updateVirtualList(0)
   },
   async onInit() {
     try {
       await this.gRC()
-      this.updateVirtualList(0)
     } catch (e) {
       global.logger.error(e)
     }
