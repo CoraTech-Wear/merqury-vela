@@ -32,6 +32,9 @@ export default {
   },
   onDestroy() {
     console.log("app destroyed");
+  },
+  getTimestampHHMM(timestamp) {
+    return dayjs(timestamp > 1e10 ? timestamp : timestamp * 1000).format("HH:mm");
   }
 }
 </script>

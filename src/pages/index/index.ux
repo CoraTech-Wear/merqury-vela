@@ -4,13 +4,13 @@
   <div class="page">
     <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
       <switch-bar title="消息列表"></switch-bar>
-      <scroll scroll-y="true" class="list" bounces="true">
+      <image if="{{!recent_msg}}" style="margin-top: 140px" src="/common/loading_reversed.gif"></image>
+      <scroll if="{{recent_msg}}" scroll-y="true" class="list" bounces="true">
         <div for="{{ recent_msg }}" class="item">
           <div class="line">
             <image src="{{ $item.avatar }}" class="avatar"></image>
             <text class="title">{{ $item.peerName }}</text>
-            <text class="time">{{ $item.msgTime }}</text>
-            <!-- TODO: 时间格式化 -->
+            <text class="time">{{ $app.$def.getTimestampHHMM($item.msgTime) }}</text>
           </div>
           <div class="line">
             <text class="content">

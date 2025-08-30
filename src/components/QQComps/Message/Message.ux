@@ -27,9 +27,6 @@ export default {
     },
     getSenderRoleBarText(role) {
         return role === "owner" ? "群主" : role === "admin" ? "管理员" : "成员";
-    },
-    getSendTimeHHMM(timestamp) {
-        return this.$app.$def.dayjs(timestamp > 1e10 ? timestamp : timestamp * 1000).format("HH:mm");
     }
 }
 </script>
