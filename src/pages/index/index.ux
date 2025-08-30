@@ -1,22 +1,33 @@
+<import
+  name="better-online-image"
+  src="@components/BetterOnlineImage/BetterOnlineImage.ux"
+></import>
 <import name="switch-bar" src="@components/SwitchBar/SwitchBar.ux"></import>
 
 <template>
   <div class="page">
     <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
       <switch-bar title="消息列表"></switch-bar>
-      <image
-        if="{{ !recent_msg }}"
-        style="margin-top: 140px"
-        src="/common/loading_reversed_transparent.gif"
-      ></image>
-      <scroll if="{{ recent_msg }}" scroll-y="true" class="list" bounces="true">
+      <scroll
+        if="{{ recent_msg }}"
+        scroll-y="{{ scrollable }}"
+        class="list"
+        onscroll="scroll"
+        onscrolltop="scrolltop"
+        ontouchstart="touchstart"
+        ontouchmove="touchmove"
+        ontouchend="touchend"
+      >
         <div for="{{ recent_msg }}" class="item">
           <div class="line">
-            <image
-              alt="/common/loading_reversed_transparent.gif"
+            <better-online-image
+              border-radius="99px"
+              width="42px"
+              height="42px"
+              cacheTime="86400000"
               src="{{ getAvatar($item) }}"
-              class="avatar"
-            ></image>
+            ></better-online-image>
+            <!-- 一天 -->
             <text class="title">{{ $item.peerName }}</text>
             <text class="time">{{ $app.$def.getTimestampStr($item.msgTime) }}</text>
           </div>
@@ -26,6 +37,8 @@
             </text>
           </div>
         </div>
+        <text class="refresh" style="top:{{ refreshTop }}px;">{{ refreshText }}</text>
+        <image class="refresh" src="/common/loading_reversed.gif" if="{{ loading }}"></image>
       </scroll>
     </scroll>
   </div>
@@ -39,7 +52,13 @@ import {get_messages_preview} from "../../qq/message"
 export default {
   private: {
     scrclass: "",
-    recent_msg: null
+    recent_msg: null,
+    //下拉刷新逻辑
+    scrollable: true,
+    scrollToppd: true,
+    refreshText: "下拉刷新",
+    refreshTop: -50,
+    loading: true
   },
   getAvatar(msg) {
     return getAvatarUrl(msg.chatType, msg.peerUin)
@@ -49,6 +68,7 @@ export default {
   },
   async gRC() {
     this.recent_msg = (await global.qq.List.getRecentContact()).data
+    this.loading = false
   },
   onInit() {
     try {
@@ -56,18 +76,67 @@ export default {
     } catch (e) {
       global.logger.error(e)
     }
+  },
+  scroll({scrollY}) {
+    if (scrollY == 0) {
+      this.scrollToppd = true
+    } else {
+      this.scrollToppd = false
+    }
+  },
+  scrolltop() {
+    this.scrollToppd = true
+  },
+  touchstart({changedTouches}) {
+    if (!this.scrollToppd) return
+    this.startY = changedTouches[0].clientY
+  },
+  touchmove({changedTouches}) {
+    if (!this.scrollToppd || !this.startY) return
+    const currentY = changedTouches[0].clientY
+    const deltaY = currentY - this.startY
+    if (deltaY < 0) return (this.scrollable = true)
+    this.scrollable = false
+    // 定义一个阻力系数，随着下拉距离增加而增大，使下拉越来越难
+    const resistanceFactor = 0.003
+    const adjustedDeltaY = deltaY / (1 + resistanceFactor * deltaY)
+    this.refreshTop = Math.min(480, adjustedDeltaY - 50)
+    if (deltaY > 100) {
+      // 松开手指后，判断是否超过阈值
+      this.loading = true
+      this.refreshText = "松开刷新"
+    } else {
+      // 未超过阈值，重置
+      this.loading = false
+      this.refreshText = "下拉刷新"
+    }
+  },
+  touchend() {
+    if (!this.scrollToppd) return
+    this.scrollable = true
+    this.refreshTop = -50 // 重置刷新状态
+    if (this.refreshText == "松开刷新") {
+      this.loading = true
+      try {
+        this.gRC()
+      } catch (e) {
+        global.logger.error(e)
+      }
+    }
   }
 }
 </script>
 
 <style lang="less">
 @import "@less/global.less";
-
+.list {
+  align-items: center;
+}
 .item {
   height: 116px;
   background-color: #262626;
   flex-direction: column;
-  max-width: 400px;
+  width: 400px;
   border-radius: 36px;
   padding: 16px;
   margin-top: 10px;
@@ -76,6 +145,7 @@ export default {
   font-size: 32px;
   flex: 1;
   lines: 1;
+  margin-left: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -103,5 +173,14 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: 42px;
+}
+.refresh {
+  position: absolute;
+  top: 20px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 99px;
+  transform-origin: 50% 50%;
 }
 </style>
