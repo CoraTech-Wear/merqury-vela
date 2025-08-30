@@ -6,40 +6,45 @@
 
 <template>
   <div class="page">
-    <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
+    <scroll
+      class="scroll {{ scrclass }} list"
+      scroll-y="{{ scrollable }}"
+      onscroll="scroll"
+      onscrolltop="scrolltop"
+      ontouchstart="touchstart"
+      ontouchmove="touchmove"
+      ontouchend="touchend"
+    >
       <switch-bar title="消息列表"></switch-bar>
-      <scroll
-        if="{{ recent_msg }}"
-        scroll-y="{{ scrollable }}"
-        class="list"
-        onscroll="scroll"
-        onscrolltop="scrolltop"
-        ontouchstart="touchstart"
-        ontouchmove="touchmove"
-        ontouchend="touchend"
+      <div style="height:{{ 126 *recent_msg.length }}px"></div>
+      <div
+        for="{{ virtualList }}"
+        style="position: absolute; top: {{ $item.offset }}px;{{ getScale($item.offset) }}"
+        class="item"
+        tid="$item.item.msgId"
       >
-        <div for="{{ recent_msg }}" class="item">
-          <div class="line">
-            <better-online-image
-              border-radius="99px"
-              width="42px"
-              height="42px"
-              cacheTime="86400000"
-              src="{{ getAvatar($item) }}"
-            ></better-online-image>
-            <!-- 一天 -->
-            <text class="title">{{ $item.peerName }}</text>
-            <text class="time">{{ $app.$def.getTimestampStr($item.msgTime) }}</text>
-          </div>
-          <div class="line">
-            <text class="content">
-              {{ $item.lastestMsg.sender.nickname }}: {{ getPreview($item.lastestMsg) }}
-            </text>
-          </div>
+        <div class="line">
+          <better-online-image
+            border-radius="99px"
+            width="42px"
+            height="42px"
+            cacheTime="86400000"
+            src="{{ getAvatar($item.item) }}"
+          ></better-online-image>
+          <!-- 一天 -->
+          <text class="title">{{ $item.item.peerName }}</text>
+          <text class="time">{{ $app.$def.getTimestampStr($item.item.msgTime) }}</text>
         </div>
-        <text class="refresh" style="top:{{ refreshTop }}px;">{{ refreshText }}</text>
-        <image class="refresh" src="/common/loading_reversed.gif" if="{{ loading }}"></image>
-      </scroll>
+        <div class="line">
+          <text class="content">
+            {{ $item.item.lastestMsg.sender.nickname }}: {{ getPreview($item.item.lastestMsg) }}
+          </text>
+        </div>
+      </div>
+      <text class="refresh" style="top:{{ refreshTop }}px;" show="{{ refreshTop>-50 }}">
+        {{ refreshText }}
+      </text>
+      <image class="refresh" src="/common/loading_reversed.gif" if="{{ loading }}"></image>
     </scroll>
   </div>
 </template>
@@ -49,16 +54,26 @@
 import {getAvatarUrl} from "../../qq/avatarHelper"
 import {get_messages_preview} from "../../qq/message"
 
+const pageSize = 5
+const itemHeight = 126
+const headerHeight = 90
+const debounceTime = 100
+let offset = 0
+let debounceTimer = null
+
 export default {
   private: {
     scrclass: "",
     recent_msg: null,
+    //虚拟列表
+    virtualList: [],
     //下拉刷新逻辑
     scrollable: true,
     scrollToppd: true,
     refreshText: "下拉刷新",
     refreshTop: -50,
-    loading: true
+    loading: true,
+    scrollY: 0
   },
   getAvatar(msg) {
     return getAvatarUrl(msg.chatType, msg.peerUin)
@@ -66,23 +81,63 @@ export default {
   getPreview(msg) {
     return get_messages_preview(msg.message)
   },
+  getScale(offset) {
+    // 提前计算公共变量，减少重复计算
+    const scrollY = this.scrollY
+    const halfItemHeight = itemHeight / 2
+
+    let scaleValue
+    let transformOrigin
+
+    if (offset < scrollY + itemHeight) {
+      const diff = offset - scrollY + halfItemHeight
+      scaleValue = Math.max(0, Math.min(80, diff)) / 160 + 0.5
+      transformOrigin = "200px 116px"
+    } else {
+      const diff = -offset + 466 + scrollY - halfItemHeight
+      scaleValue = Math.max(0, Math.min(80, diff)) / 160 + 0.5
+      transformOrigin = "200px 0px"
+    }
+
+    return `scale:${scaleValue};transform-origin: ${transformOrigin};`
+  },
   async gRC() {
     this.recent_msg = (await global.qq.List.getRecentContact()).data
     this.loading = false
   },
-  onInit() {
+  async onInit() {
     try {
-      this.gRC()
+      await this.gRC()
+      this.updateVirtualList(0)
     } catch (e) {
       global.logger.error(e)
     }
   },
+  updateVirtualList(offset) {
+    this.virtualList = this.recent_msg.slice(offset, offset + pageSize).map((item, index) => {
+      return {
+        item,
+        offset: (offset + index) * itemHeight + headerHeight
+      }
+    })
+  },
   scroll({scrollY}) {
+    this.scrollY = scrollY
     if (scrollY == 0) {
       this.scrollToppd = true
     } else {
       this.scrollToppd = false
     }
+    const newOffset = Math.max(0, Math.floor((scrollY - headerHeight) / itemHeight))
+    /* if (newOffset - offset > 0 || offset - newOffset > 1) { */
+    if (debounceTimer) {
+      clearTimeout(debounceTimer)
+    }
+    debounceTimer = setTimeout(() => {
+      offset = newOffset
+      this.updateVirtualList(offset)
+    }, debounceTime)
+    /* } */
   },
   scrolltop() {
     this.scrollToppd = true
@@ -132,27 +187,6 @@ export default {
 .list {
   align-items: center;
 }
-
-@keyframes show-anim {
-  0% {
-      transform: scale(0);
-  }
-
-  100% {
-      transform: scale(1);
-  }
-}
-
-@keyframes show-anim {
-  0% {
-      transform: scale(0);
-  }
-
-  100% {
-      transform: scale(1);
-  }
-}
-
 .item {
   height: 116px;
   background-color: #262626;
@@ -161,9 +195,7 @@ export default {
   border-radius: 36px;
   padding: 16px;
   margin-top: 10px;
-  animation-name: show-anim;
-  animation-duration: 500ms;
-  animation-timing-function: ease-out;
+  transform-origin: 200px 58px;
 }
 .title {
   font-size: 32px;
@@ -200,6 +232,7 @@ export default {
 }
 .refresh {
   position: absolute;
+  transform: translateY(90px);
   top: 20px;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.8);
