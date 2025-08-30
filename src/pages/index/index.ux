@@ -29,7 +29,7 @@
             border-radius="99px"
             width="42px"
             height="42px"
-            cacheTime="86400000"
+            cache-time="86400000"
             src="{{ getAvatar($item.item) }}"
           ></better-online-image>
           <!-- 一天 -->
@@ -53,7 +53,9 @@
 <script>
 //小米傻逼linter你完了
 import { getAvatarUrl } from "../../qq/avatarHelper";
-import { get_messages_preview } from "../../qq/message";
+import { getMessagesPreview } from "../../qq/message";
+
+import router from "@system.router"
 
 const pageSize = 5
 const itemHeight = 126
@@ -76,11 +78,21 @@ export default {
     loading: true,
     scrollY: 0
   },
+  openChat(msg) {
+    router.push({
+      uri: "pages/chat",
+      params: {
+        chatTargetName: msg.peerName,
+        chatTargetId: msg.peerUin,
+        chatType: msg.chatType
+      }
+    })
+  },
   getAvatar(msg) {
     return getAvatarUrl(msg.chatType, msg.peerUin)
   },
   getPreview(msg) {
-    return get_messages_preview(msg.message)
+    return getMessagesPreview(msg.message)
   },
   getScale(offset) {
     // 提前计算公共变量，减少重复计算
