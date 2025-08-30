@@ -132,6 +132,17 @@ export default {
 .list {
   align-items: center;
 }
+
+@keyframes show-anim {
+  0% {
+      transform: scale(0);
+  }
+
+  100% {
+      transform: scale(1);
+  }
+}
+
 .item {
   height: 116px;
   background-color: #262626;
@@ -140,6 +151,9 @@ export default {
   border-radius: 36px;
   padding: 16px;
   margin-top: 10px;
+  animation-name: show-anim;
+  animation-duration: 500ms;
+  animation-timing-function: ease-out;
 }
 .title {
   font-size: 32px;
