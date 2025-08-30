@@ -6,8 +6,8 @@ export async function sendNapCatPostRequest(api: string, params: any): Promise<a
 
     global.logger.log(`Sending NapCat Post to ${baseUrl}${api} with params ${JSON.stringify(params)}`);
 
-    let promiseRet = await new Promise<any>((resolve, reject) => {
-        fetch.fetch({
+    try {
+        let promiseRet = await fetch.fetch({
             url: `${baseUrl}${api}`,
             method: "POST",
             data: JSON.stringify(params),
@@ -15,13 +15,11 @@ export async function sendNapCatPostRequest(api: string, params: any): Promise<a
             header: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
-            },
-            success: (ret:any) => resolve(ret),
-            fail: (ret:any) => {
-                global.logger.error(`Sending NapCat Post to ${api} with params ${JSON.stringify(params)} failed with ${JSON.stringify(ret)}`);
-                reject(ret);
             }
         });
-    });
-    return promiseRet.data;
+        return promiseRet.data;
+    } catch (err) {
+        global.logger.error(`NapCat Post request failed: ${err}`);
+        throw err;
+    }
 }
