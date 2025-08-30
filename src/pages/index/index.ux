@@ -143,6 +143,16 @@ export default {
   }
 }
 
+@keyframes show-anim {
+  0% {
+      transform: scale(0);
+  }
+
+  100% {
+      transform: scale(1);
+  }
+}
+
 .item {
   height: 116px;
   background-color: #262626;
