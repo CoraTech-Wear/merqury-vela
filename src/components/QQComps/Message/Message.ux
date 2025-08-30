@@ -9,7 +9,7 @@
             </div>
             <div class="box" for="{{msg.message}}">
                 <div if="{{$item.type === 'text'}}">
-                    <text style="font-size: 20px;">{{$item.data.text}}</text>
+                    <text style="font-size: 32px;">{{$item.data.text}}</text>
                 </div>
             </div>
         </div>

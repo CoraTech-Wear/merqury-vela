@@ -16,6 +16,7 @@ import router from "@system.router"
 export default {
   private: {
     recent_msg: null,
+    scrclass: "",
     testmsg: {
       self_id: 3971017205,
       user_id: 2039210460,
