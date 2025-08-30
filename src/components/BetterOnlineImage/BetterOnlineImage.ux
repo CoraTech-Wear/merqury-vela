@@ -1,7 +1,7 @@
 <template>
   <div @click="Click" style="{{div_style}}">
     <image if="{{show_image}}" src="{{localsrc}}" style="{{image_style}}" class="img"></image>
-    <image if="{{show_loading && loadingAnim}}" src="/common/loading_reversed.gif"></image>
+    <image if="{{show_loading && loadingAnim}}" src="/common/loading_reversed_transparent.gif"></image>
   </div>
 </template>
 
