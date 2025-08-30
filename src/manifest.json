@@ -5,6 +5,7 @@
   "versionCode": 1,
   "minPlatformVersion": 1000,
   "icon": "/common/logo.png",
+  "designWidth": 466,
   "deviceTypeList": [
     "watch"
   ],
