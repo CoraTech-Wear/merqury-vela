@@ -37,6 +37,7 @@
             </text>
           </div>
         </div>
+        <text style="margin-top: 35px;"></text>
         <text class="refresh" style="top:{{ refreshTop }}px;">{{ refreshText }}</text>
         <image class="refresh" src="/common/loading_reversed.gif" if="{{ loading }}"></image>
       </scroll>
@@ -143,16 +144,6 @@ export default {
   }
 }
 
-@keyframes show-anim {
-  0% {
-      transform: scale(0);
-  }
-
-  100% {
-      transform: scale(1);
-  }
-}
-
 .item {
   height: 116px;
   background-color: #262626;
@@ -170,6 +161,7 @@ export default {
   flex: 1;
   lines: 1;
   margin-left: 10px;
+  font-weight: bold;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
