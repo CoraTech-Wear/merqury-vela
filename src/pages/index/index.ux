@@ -16,7 +16,11 @@
       ontouchend="touchend"
     >
       <switch-bar title="消息列表"></switch-bar>
-      <div for="{{ virtualList }}" tid="$item.item.msgId">
+      <div
+        for="{{ virtualList }}"
+        tid="$item.item.msgId"
+        style="position: absolute;top:{{ $item.offset }}px;"
+      >
         <div
           style="{{ getScale($item.offset) }}"
           class="item"
@@ -54,7 +58,9 @@
 
 <script>
 //小米傻逼linter你完了
-import { getAvatarUrl } from "../../qq/avatarHelper";
+import router from "@system.router"
+import {getAvatarUrl} from "../../qq/avatarHelper"
+import {getMessagesPreview} from "../../qq/message"
 
 //const pageSize = 7
 const itemHeight = 126
