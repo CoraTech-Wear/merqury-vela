@@ -4,11 +4,11 @@
   <div class="page">
     <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
       <switch-bar title="消息列表"></switch-bar>
-      <image if="{{!recent_msg}}" style="margin-top: 140px" src="/common/loading_reversed.gif"></image>
+      <image if="{{!recent_msg}}" style="margin-top: 140px" src="/common/loading_reversed_transparent.gif"></image>
       <scroll if="{{recent_msg}}" scroll-y="true" class="list" bounces="true">
         <div for="{{ recent_msg }}" class="item">
           <div class="line">
-            <image src="{{ $item.avatar }}" class="avatar"></image>
+            <image alt="/common/loading_reversed_transparent.gif" src="{{ getAvatar($item) }}" class="avatar"></image>
             <text class="title">{{ $item.peerName }}</text>
             <text class="time">{{ $app.$def.getTimestampHHMM($item.msgTime) }}</text>
           </div>
@@ -24,17 +24,20 @@
 </template>
 
 <script>
+import { getAvatarUrl } from "../../qq/avatarHelper"
+
 export default {
   private: {
     scrclass: "",
     recent_msg: null
   },
+  getAvatar(msg) {
+    return getAvatarUrl(msg.chatType, msg.peerUin);
+  },
   async gRC() {
     this.recent_msg = (await global.qq.List.getRecentContact()).data
-    console.log(this.recent_msg)
   },
   onInit() {
-    global.logger.log("gRC")
     try {
       this.gRC()
     } catch (e) {
@@ -47,13 +50,6 @@ export default {
 <style lang="less">
 @import "@less/global.less";
 
-.list {
-  padding-left: 52px;
-  padding-right: 52px;
-  padding-bottom: 52px;
-  flex: 1;
-  flex-direction: column;
-}
 .item {
   height: 116px;
   background-color: #262626;
