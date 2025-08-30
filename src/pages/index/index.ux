@@ -16,8 +16,6 @@
             <text class="content">
               {{ $item.lastestMsg.sender.nickname }}: {{ $item.lastestMsg.raw_message }}
             </text>
-            <text class="bardage" if="{{ false }}">{{ $item.lastestMsg.font }}</text>
-            <!-- TODO:我不知道这个消息数量是什么接口 -->
           </div>
         </div>
       </scroll>
@@ -95,16 +93,5 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: 42px;
-}
-.bardage {
-  font-size: 24px;
-  color: #fff;
-  background-color: #666666;
-  padding: 5px;
-  border-radius: 99px;
-  height: 30px;
-  text-align: center;
-  flex-shrink: 0;
-  lines: 1;
 }
 </style>
