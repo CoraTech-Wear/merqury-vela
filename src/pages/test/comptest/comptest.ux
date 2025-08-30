@@ -1,10 +1,11 @@
 <import name="title-bar" src="@components/TitleBar/TitleBar.ux"></import>
+<import name="qq-message" src="@components/QQComps/Message/Message.ux"></import>
 
 <template>
   <div class="page">
-    <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
+    <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
       <title-bar title="组件测试"></title-bar>
-      
+      <qq-message msg="{{ testmsg }}"></qq-message>
     </scroll>
   </div>
 </template>
@@ -14,24 +15,42 @@ import router from "@system.router"
 
 export default {
   private: {
-    recent_msg: null
-  },
-  async gRC(){
-    this.recent_msg = (await global.qq.List.getRecentContact()).data;
-    console.log(this.recent_msg)
-  },
-  onInit(){
-    global.logger.log("gRC")
-    try {
-      this.gRC()
-    }
-    catch(e) {
-      global.logger.error(e)
+    recent_msg: null,
+    testmsg: {
+      self_id: 3971017205,
+      user_id: 2017029033,
+      time: 1756534567,
+      message_id: 1433014140,
+      message_seq: 1433014140,
+      real_id: 1433014140,
+      real_seq: "180761",
+      message_type: "group",
+      sender: {
+        user_id: 2017029033,
+        nickname: "yistart",
+        card: "this.state.yistart = params.yistar",
+        role: "admin"
+      },
+      raw_message: "幸福相随",
+      font: 14,
+      sub_type: "normal",
+      message: [
+        {
+          type: "text",
+          data: {
+            text: "幸福相随"
+          }
+        }
+      ],
+      message_format: "array",
+      post_type: "message",
+      group_id: 902465287,
+      group_name: "余志文飞机坪"
     }
   }
 }
 </script>
 
 <style lang="less">
-@import '@less/global.less';
+@import "@less/global.less";
 </style>

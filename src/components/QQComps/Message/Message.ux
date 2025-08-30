@@ -1,21 +1,40 @@
 <template>
     <div class="base">
-        <div></div>
+        <div class="message">
+            <div class="sender-info">
+                <text class="sender-bar-text">{{msg.sender.nickname}}</text>
+                <div if="{{msg.sender.role}}" class="sender-rolebar" style="background-color: {{getSenderRoleBarBgColor(msg.sender.role)}}">
+                    <text class="sender-bar-text" style="color: {{getSenderRoleBarTextColor(msg.sender.role)}}">{{getSenderRoleBarText(msg.sender.role)}}</text>
+                </div>
+                <div class="send-time">
+                    <text class="sender-bar-text">{{getSendTimeHHMM(msg.time)}}</text>
+                </div>
+            </div>
+            <div class="box" for="{{msg.message}}">
+                <div if="{{$item.type === 'text'}}">
+                    <text>{{$item.data.text}}</text>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "@uxls/types";
-import { Message } from "../../../qq/types";
-
-export default defineComponent({
-    props: {
-        msg: {
-            type: Object as () => Message,
-            required: true
-        }
+<script>
+export default {
+    props: ["msg"],
+    getSenderRoleBarBgColor(role) {
+        return role === "owner" ? "rgba(255, 178, 0, 0.4)" : role === "admin" ? "rgba(0, 68, 255, 0.4)" : "";
+    },
+    getSenderRoleBarTextColor(role) {
+        return role === "owner" ? "#FFD400" : role === "admin" ? "#4D7CFF" : "white";
+    },
+    getSenderRoleBarText(role) {
+        return role === "owner" ? "群主" : role === "admin" ? "管理员" : "成员";
+    },
+    getSendTimeHHMM(timestamp) {
+        return this.$app.$def.dayjs(timestamp > 1e10 ? timestamp : timestamp * 1000).format("HH:mm");
     }
-})
+}
 </script>
 
 <style lang="less">
@@ -23,5 +42,40 @@ export default defineComponent({
 
 .base {
     width: 360px;
+    flex-direction: column;
+}
+
+.message {
+    max-width: 330px;
+    flex-direction: column;
+}
+
+.sender-info {
+    margin-left: 5px;
+}
+
+.sender-bar-text {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.sender-rolebar {
+    padding: 1px 5px;
+    margin-left: 3px;
+    border-radius: 10px;
+}
+
+.send-time {
+    background-color: #666666;
+    padding: 1px 5px;
+    border-radius: 10px;
+}
+
+.box {
+    flex-direction: column;
+    padding: 8px;
+    background-color: #666666;
+    border-radius: 10px;
+    margin-top: 4px;
 }
 </style>
