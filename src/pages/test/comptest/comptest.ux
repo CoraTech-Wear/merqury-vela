@@ -18,34 +18,34 @@ export default {
     recent_msg: null,
     testmsg: {
       self_id: 3971017205,
-      user_id: 2017029033,
-      time: 1756534567,
-      message_id: 1433014140,
-      message_seq: 1433014140,
-      real_id: 1433014140,
-      real_seq: "180761",
+      user_id: 2039210460,
+      time: 1756547699,
+      message_id: 799406279,
+      message_seq: 799406279,
+      real_id: 799406279,
+      real_seq: "33147",
       message_type: "group",
       sender: {
-        user_id: 2017029033,
-        nickname: "yistart",
-        card: "this.state.yistart = params.yistar",
-        role: "admin"
+        user_id: 2039210460,
+        nickname: "SearchstarsPlusssssssssssssss",
+        card: "",
+        role: "owner"
       },
-      raw_message: "幸福相随",
+      raw_message: "3",
       font: 14,
       sub_type: "normal",
       message: [
         {
           type: "text",
           data: {
-            text: "幸福相随"
+            text: "Rylin我喜欢你Rylin我喜欢Rylin我喜欢你Rylin我喜欢你"
           }
         }
       ],
       message_format: "array",
       post_type: "message",
-      group_id: 902465287,
-      group_name: "余志文飞机坪"
+      group_id: 958060916,
+      group_name: "AstroBox Developers"
     }
   }
 }

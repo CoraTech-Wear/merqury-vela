@@ -2,17 +2,14 @@
     <div class="base">
         <div class="message">
             <div class="sender-info">
-                <text class="sender-bar-text">{{msg.sender.nickname}}</text>
                 <div if="{{msg.sender.role}}" class="sender-rolebar" style="background-color: {{getSenderRoleBarBgColor(msg.sender.role)}}">
                     <text class="sender-bar-text" style="color: {{getSenderRoleBarTextColor(msg.sender.role)}}">{{getSenderRoleBarText(msg.sender.role)}}</text>
                 </div>
-                <div class="send-time">
-                    <text class="sender-bar-text">{{getSendTimeHHMM(msg.time)}}</text>
-                </div>
+                <text class="sender-nickname">{{msg.sender.nickname}}</text>
             </div>
             <div class="box" for="{{msg.message}}">
                 <div if="{{$item.type === 'text'}}">
-                    <text>{{$item.data.text}}</text>
+                    <text style="font-size: 20px;">{{$item.data.text}}</text>
                 </div>
             </div>
         </div>
@@ -51,31 +48,39 @@ export default {
 }
 
 .sender-info {
-    margin-left: 5px;
+    margin-left: 12px;
+    flex-direction: row;
+    align-items: center;
 }
 
 .sender-bar-text {
-    font-size: 15px;
-    font-weight: 400;
+    font-size: 20px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+}
+
+.sender-nickname {
+    margin-left: 6px;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.6);
+    flex: 1;
+    lines: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .sender-rolebar {
-    padding: 1px 5px;
-    margin-left: 3px;
-    border-radius: 10px;
-}
-
-.send-time {
-    background-color: #666666;
-    padding: 1px 5px;
-    border-radius: 10px;
+    flex-shrink: 0;
+    padding: 2px 10px;
+    border-radius: 121px;
 }
 
 .box {
     flex-direction: column;
-    padding: 8px;
-    background-color: #666666;
-    border-radius: 10px;
-    margin-top: 4px;
+    padding: 16px;
+    background-color: #262626;
+    border-radius: 36px;
+    margin-top: 6px;
 }
 </style>
