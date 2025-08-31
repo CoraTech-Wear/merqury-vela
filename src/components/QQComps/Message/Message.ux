@@ -5,7 +5,7 @@
 
 <template>
     <div class="base">
-        <div class="message {{isSelf() ? 'self-message' : ''}}">
+        <div class="message {{isSelf() ? 'self-message' : ''}}" if="{{msg.message.length}}">
             <!-- 对方 -->
             <div if="{{!isSelf()}}" class="sender-info">
                 <div if="{{shouldShowRoleBar(msg.sender.role)}}" class="sender-rolebar" style="background-color: {{getSenderRoleBarBgColor(msg.sender.role)}}">
@@ -43,10 +43,19 @@
                 <img elif="{{$item.type === 'face'}}" src="/common/face/{{$item.data.id}}.png" style="width:48px;height:48px"></img>
                 <text elif="{{$item.type === 'record'}}">[语音]</text>
                 <text elif="{{$item.type === 'file'}}">[文件 {{$item.data.file}}]</text>
+                <div elif="{{$item.type === 'forward'}}" style="display: flex;flex-direction: column;">
+                    <text>合并转发</text>
+                    <text class="reply-1" >{{getPreview($item.data.content[0])}}</text>
+                    <text class="reply-1" if="{{$item.data.content.length > 1}}">{{getPreview($item.data.content[1])}}</text>
+                    <text class="reply-1" if="{{$item.data.content.length > 2}}">{{getPreview($item.data.content[2])}}</text>
+                    <div style="background-color: #fff;width:100%;height:1px"></div>
+                    <text class="reply-1">查看{{$item.data.content.length}}条转发消息</text>
+                </div>
                 <text elif="{{$item.type !== 'reply'}}">[该消息暂不支持显示]</text>
             </div>
         </div>
         </div>
+        <text else style="width: 100%;text-align: center;" class='reply-1'><span style="color:#4D7CFF">{{msg.sender.nickname}}</span>撤回了一条消息</text>
     </div>
 </template>
 
@@ -65,6 +74,9 @@ export default {
         this.reply_msg = global.qq.Message.getMessagesPreview(reply.message)
         this.reply_time = this.$app.$def.getTimestampStr(reply.time)
       }
+    },
+    getPreview(msg) {
+      return `${msg.sender.nickname}:${global.qq.Message.getMessagesPreview(msg.message)}`
     },
     isSelf() {
         return this.msg.self_id === this.msg.user_id;
