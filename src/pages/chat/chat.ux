@@ -9,7 +9,7 @@
             <qq-message for="{{ messages }}" msg="{{ $item }}"></qq-message>
         </scroll>
     </scroll>
-    <image style="position: absolute; top: 208px" src="/common/loading_reversed.gif" if="{{ !messages }}"></image>
+    <image style="position: absolute; top: 230px" src="/common/loading_reversed.gif" if="{{ !messages }}"></image>
   </div>
 </template>
 

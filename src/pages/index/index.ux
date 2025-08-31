@@ -48,10 +48,11 @@
         <div class="item" else></div>
       </div>
 
+      <text style="width: 0px; height: 0px; opacity: 0.0">{{scrollY}}</text>
       <text class="refresh" style="top:{{ refreshTop }}px;" show="{{ refreshTop>-50 }}">
         {{ refreshText }}
       </text>
-      <image class="refresh" src="/common/loading_reversed.gif" if="{{ loading }}"></image>
+      <image class="refresh" src="/common/loading_reversed_transparent.gif" if="{{ loading }}"></image>
     </scroll>
   </div>
 </template>
