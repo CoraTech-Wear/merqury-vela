@@ -2,11 +2,11 @@
   <div class="time-comp" style="{{compStyle}}">
     <div if="{{!useRectTime}}">
       <div class="circle-time">
-        <text class="timetxt">{{ hourHigh }}</text>
-        <text class="timetxt">{{ hourLow }}</text>
-        <text class="timetxt">:</text>
-        <text class="timetxt">{{ minuteHigh }}</text>
-        <text class="timetxt">{{ minuteLow }}</text>
+        <text class="timetxt r1">{{ hourHigh }}</text>
+        <text class="timetxt r2">{{ hourLow }}</text>
+        <text class="timetxt r3">:</text>
+        <text class="timetxt r4">{{ minuteHigh }}</text>
+        <text class="timetxt r5">{{ minuteLow }}</text>
       </div>
     </div>
     <div if="{{useRectTime}}" class="rect">
@@ -60,7 +60,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 3.5px;
+  top: -2px;
 }
 
 .circle-time {
@@ -68,13 +68,38 @@ export default {
 }
 
 .timetxt {
-  font-size: 25px;
+  font-size: 32px;
   font-weight: 600;
-  top: 2px;
+  text-align: center;
+  justify-items: center;
+  align-items: center;
+  width: 22px;
+  height: 42px;
+  transform-origin: 11px 21px;
 }
 
 .rect-txt {
   font-size: 30px;
   padding: 0px;
+}
+
+.r1 {
+  transform: rotate(-7.98deg);
+  top: 4px;
+}
+.r2 {
+  transform: rotate(-3.99deg);
+  top: 1px;
+}
+.r4 {
+  transform: rotate(3.99deg);
+  top: 1px;
+}
+.r5 {
+  transform: rotate(7.98deg);
+  top: 4px;
+}
+.r3 {
+  top: -3px;
 }
 </style>
