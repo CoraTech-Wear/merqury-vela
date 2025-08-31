@@ -38,7 +38,7 @@ export function getMessagesPreview(msg: Messages[]) {
     return preview
 }
 
-export async function getGroupMessageHistory(id: string, messageSeq: string, count: number=10) {
+export async function getGroupMessageHistory(id: string, messageSeq: string, count: number=15) {
     return (await sendNapCatPostRequest("/get_group_msg_history", {
         group_id: id,
         message_seq: messageSeq,

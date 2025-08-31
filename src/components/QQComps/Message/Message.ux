@@ -31,7 +31,7 @@
             <div for="{{msg.message}}">
                 <text if="{{$item.type === 'text'}}" style="font-size: 32px; font-weight: 500; {{isSelf() ? 'text-align: right' : ''}}">{{$item.data.text}}</text>
                 <text elif="{{$item.type === 'at'}}">@{{$item.data.qq}}</text>
-                <div elif="{{$item.type === 'image'}}" style="height: 250px">
+                <div elif="{{$item.type === 'image'}}" style="min-height: 250px">
                     <better-online-image
                         height="250px"
                         src="{{$item.data.url}}"
