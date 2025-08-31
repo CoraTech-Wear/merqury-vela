@@ -18,7 +18,7 @@ export function getMessagesPreview(msg: Messages[]) {
                 preview += `[视频]`
                 break;
             case MessageType.image:
-                preview += `[图片]`
+                preview += m.data.summary??`[图片]`
                 break;
             case MessageType.forward:
                 preview += `[转发]`

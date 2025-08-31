@@ -41,7 +41,7 @@
           </div>
           <div class="line">
             <text class="content">
-              {{ $item.item.lastestMsg.sender.nickname }}: {{ getPreview($item.item.lastestMsg) }}
+              {{ $item.item.chatType !== 1 ?  $item.item.lastestMsg.sender.nickname+":":"" }}{{ getPreview($item.item.lastestMsg) }}
             </text>
           </div>
         </div>
