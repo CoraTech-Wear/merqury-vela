@@ -69,13 +69,14 @@ export default {
 
 .timetxt {
   font-size: 32px;
-  font-weight: 600;
+  font-weight: bold;
   text-align: center;
   justify-items: center;
   align-items: center;
   width: 22px;
   height: 42px;
   transform-origin: 11px 21px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .rect-txt {
@@ -84,19 +85,19 @@ export default {
 }
 
 .r1 {
-  transform: rotate(-7.98deg);
+  transform: rotate(-10deg);
   top: 4px;
 }
 .r2 {
-  transform: rotate(-3.99deg);
+  transform: rotate(-5deg);
   top: 1px;
 }
 .r4 {
-  transform: rotate(3.99deg);
+  transform: rotate(5deg);
   top: 1px;
 }
 .r5 {
-  transform: rotate(7.98deg);
+  transform: rotate(10deg);
   top: 4px;
 }
 .r3 {
