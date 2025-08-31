@@ -8,8 +8,8 @@
         <scroll id="msgscroll" class="list" scroll-y="true" bounces="true" if="{{ messages }}">
             <qq-message for="{{ messages }}" msg="{{ $item }}"></qq-message>
         </scroll>
+        <image style="position: absolute; top: 230px" src="/common/loading_reversed.gif" if="{{ !messages }}"></image>
     </scroll>
-    <image style="position: absolute; top: 230px" src="/common/loading_reversed.gif" if="{{ !messages }}"></image>
   </div>
 </template>
 
