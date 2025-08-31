@@ -5,7 +5,7 @@
 
 <template>
     <div class="base">
-        <div class="message {{isSelf() ? 'self-message' : ''}}" if="{{msg.message.length}}">
+        <div class="message {{isSelf() ? 'self-message' : ''}}" if="{{msg.message.length}}" onclick="onclick">
             <!-- 对方 -->
             <div if="{{!isSelf()}}" class="sender-info">
                 <div if="{{shouldShowRoleBar(msg.sender.role)}}" class="sender-rolebar" style="background-color: {{getSenderRoleBarBgColor(msg.sender.role)}}">
@@ -30,7 +30,7 @@
             </div>
             <div for="{{msg.message}}">
                 <text if="{{$item.type === 'text'}}" style="font-size: 32px; font-weight: 500; {{isSelf() ? 'text-align: right' : ''}}">{{$item.data.text}}</text>
-                <text elif="{{$item.type === 'at'}}">@{{$item.data.qq}}</text>
+                <text elif="{{$item.type === 'at'}}">@{{$item.data.name??$item.data.qq}}</text>
                 <div elif="{{$item.type === 'image'}}" style="min-height: 250px">
                     <better-online-image
                         max-height="250px"
@@ -41,7 +41,7 @@
                     </better-online-image>
                 </div>
                 <img elif="{{$item.type === 'face'}}" src="/common/face/{{$item.data.id}}.png" style="width:48px;height:48px"></img>
-                <text elif="{{$item.type === 'record'}}">[语音]</text>
+                <text elif="{{$item.type === 'record'}}">[语音]{{record_status}}</text>
                 <text elif="{{$item.type === 'file'}}">[文件 {{$item.data.file}}]</text>
                 <div elif="{{$item.type === 'forward'}}" style="display: flex;flex-direction: column;">
                     <text>合并转发</text>
@@ -60,12 +60,16 @@
 </template>
 
 <script>
+//1
+import audio from "@system.audio";
+
 export default {
     props: ["msg"],
     data:{
       reply_name:null,
       reply_msg:null,
       reply_time:null,
+    record_status:"点击播放。",
     },
     async onInit() {
       if(this.msg.message[0].type === 'reply'){
@@ -73,6 +77,44 @@ export default {
         this.reply_name = reply.sender.nickname
         this.reply_msg = global.qq.Message.getMessagesPreview(reply.message)
         this.reply_time = this.$app.$def.getTimestampStr(reply.time)
+      }
+    },
+    async onclick(){
+      if(this.msg.message[0].type === 'record'){
+        const res = await new Promise((resolve, reject) => {
+            audio.getPlayState({
+                success: (data) => {
+                    resolve(data)
+                },
+                fail: (data) => {
+                    console.log(data)
+                    resolve({state:'paused'})
+                }
+            })
+        })
+        if(res.state === 'playing'){
+            audio.pause()
+            return
+        }
+        const uri = await global.qq.Message.getRecord(this.msg.message[0].data.file)
+        audio.src = uri
+        /* const interval = setInterval(() => {
+            this.record_status = `${audio.currentTime}/${audio.duration} `
+        }, 100) */
+        audio.onplay = () => {
+            this.record_status = "点击暂停。"
+        }
+        audio.onpause = () => {
+            this.record_status = "点击播放。"
+            clearInterval(interval)
+        }
+        audio.onended = () => {
+            this.record_status = "点击播放。"
+            setTimeout(() => {
+            audio.stop()
+            }, 500)
+        }
+        audio.play()
       }
     },
     getPreview(msg) {

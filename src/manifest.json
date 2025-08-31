@@ -42,7 +42,8 @@
     },
     {
       "name": "system.router"
-    }
+    },
+    { "name": "system.audio" }
   ],
   "config": {
     "logLevel": "log",

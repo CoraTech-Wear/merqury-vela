@@ -1,3 +1,5 @@
+import { asyncFile } from "../asyncapi/file";
+import base64ToUint8Array from "../utils/b64ToArraryBuffer";
 import { sendNapCatPostRequest } from "./request";
 import { Messages, MessageType } from "./types";
 
@@ -58,4 +60,21 @@ export async function getMessage(id: string){
     return (await sendNapCatPostRequest("/get_msg", {
         message_id: id
     }));
+}
+
+export async function getRecord(file:string){
+    const uri = `internal://files/cache/record/${file.replace(".amr",".mp3")}`
+    if(await asyncFile.access({uri}).catch(()=>false)){
+        return uri
+    }
+    const {base64} = (await sendNapCatPostRequest<{base64:string}>("/get_record", {
+        file,
+        out_format:"mp3"
+    })).data
+    const buffer = base64ToUint8Array(base64)
+    await asyncFile.writeArrayBuffer({
+        uri,
+        buffer
+    })
+    return uri
 }
