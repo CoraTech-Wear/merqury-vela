@@ -30,18 +30,11 @@ export default {
     }
 
     setTimeout(() => {
-        this.$element('msgscroll').getScrollRect({
-            success: ({ width, height }) => {
-                this.$element('msgscroll').scrollTo({
-                    top: height,
-                    behavior: "instant"
-                })
-            },
-            fail: (f) => {
-                console.error(f)
-            }
-        });
-    }, 500) // 也许它可能需要一些渲染时间 我不知道 但好像真是
+        this.$element('msgscroll').scrollTo({
+            top: 99999, // It just works.
+            behavior: "instant"
+        })
+    }, 800) // 也许它可能需要一些渲染时间 我不知道 但好像真是
   },
   onReady(){
     global.logger.log(`Load: ${this.chatTargetName} ${this.chatTargetId} ${this.chatType}`)
