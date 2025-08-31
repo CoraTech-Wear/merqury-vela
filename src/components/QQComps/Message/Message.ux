@@ -40,7 +40,7 @@
                     >
                     </better-online-image>
                 </div>
-                <text elif="{{$item.type === 'face'}}">[表情]</text>
+                <img elif="{{$item.type === 'face'}}" src="/common/face/{{$item.data.id}}.png" style="width:48px;height:48px"></img>
                 <text elif="{{$item.type === 'record'}}">[语音]</text>
                 <text elif="{{$item.type === 'file'}}">[文件 {{$item.data.file}}]</text>
                 <text elif="{{$item.type !== 'reply'}}">[该消息暂不支持显示]</text>
@@ -160,6 +160,7 @@ export default {
 .box {
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;
     padding: 16px;
     background-color: #262626;
     border-radius: 36px;
