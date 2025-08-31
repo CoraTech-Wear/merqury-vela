@@ -6,7 +6,7 @@
     <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
         <title-bar title="{{ chatTargetName }}"></title-bar>
         <scroll id="msgscroll" class="list" scroll-y="true" bounces="true" if="{{ messages }}">
-            <qq-message for="{{ messages }}" msg="{{ $item }}"></qq-message>
+            <qq-message for="{{ messages }}" msg="{{ $item }}" type="{{ chatType }}" target="{{chatTargetId}}"></qq-message>
         </scroll>
         <div class="actions">
           <img src="/common/mic.png" class="action" />

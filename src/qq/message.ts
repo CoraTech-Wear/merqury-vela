@@ -78,3 +78,17 @@ export async function getRecord(file:string){
     })
     return uri
 }
+
+export async function sendGroupMessage(group_id: string, message: Messages[]) {
+    return (await sendNapCatPostRequest("/send_group_msg", {
+        group_id,
+        message
+    }));
+}
+
+export async function sendPrivateMessage(user_id: string, message: Messages[]) {
+    return (await sendNapCatPostRequest("/send_private_msg", {
+        user_id,
+        message
+    }));
+}

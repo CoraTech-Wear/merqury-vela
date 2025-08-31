@@ -69,6 +69,9 @@
       },
       "pages/chat": {
         "component": "chat"
+      },
+      "pages/msgInfo": {
+        "component": "msgInfo"
       }
     }
   }

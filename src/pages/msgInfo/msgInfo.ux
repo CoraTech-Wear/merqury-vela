@@ -1,0 +1,80 @@
+<import name="title-bar" src="@components/TitleBar/TitleBar.ux"></import>
+
+<template>
+  <div class="page">
+    <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
+      <title-bar title="消息功能"></title-bar>
+        <div class="action" for="{{actions}}" onclick="{{$item.action}}">
+          <text>{{$item.name}}</text>
+          <img src="{{$item.icon}}"/>
+        </div>
+    </scroll>
+  </div>
+</template>
+
+<script>
+//1
+import router from '@system.router';
+
+export default {
+  public: {
+    msgId: null,
+    admin: false,
+    sender: null,
+    type: null,
+    target: null,
+  },
+  private: {
+    actions:[],
+  },
+  onInit(){
+    this.actions= [
+      {
+        name: '回复',
+        icon: '/common/reply.png',
+        action: () => {
+        },
+      },
+      {
+        name: '+1',
+        icon: '/common/plus1.png',
+        action:()=>this.plus1()
+      },
+      {
+        name: '删除',
+        icon: '/common/del.png',
+        action: () => {
+        } ,
+      },
+    ]
+  },
+  async plus1(){
+    try {
+            const message =(await global.qq.Message.getMessage(this.msgId)).data.message
+            if(this.type==2)await global.qq.Message.sendGroupMessage(this.target, message)
+            else if(this.type==1)await global.qq.Message.sendPrivateMessage(this.target, message)
+            router.back()
+        } catch (error) {
+            console.log(error)
+        }
+  }
+}
+</script>
+
+<style lang="less">
+@import '@less/global.less';
+.action{
+  flex-direction: row;
+  width: 400px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  border-radius: 36px;
+  background-color: #262626;
+  margin-top: 10px;
+}
+.text{
+  font-size: 32px;
+  color: #fff;
+}
+</style>

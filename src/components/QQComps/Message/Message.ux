@@ -5,7 +5,7 @@
 
 <template>
     <div class="base">
-        <div class="message {{isSelf() ? 'self-message' : ''}}" if="{{msg.message.length}}" onclick="onclick">
+        <div class="message {{isSelf() ? 'self-message' : ''}}" if="{{msg.message.length}}">
             <!-- 对方 -->
             <div if="{{!isSelf()}}" class="sender-info">
                 <div if="{{shouldShowRoleBar(msg.sender.role)}}" class="sender-rolebar" style="background-color: {{getSenderRoleBarBgColor(msg.sender.role)}}">
@@ -28,7 +28,7 @@
               </div>
               <text class="reply-msg">{{reply_msg}}</text>
             </div>
-            <div for="{{msg.message}}">
+            <div for="{{msg.message}}" onlongpress="onLongPress">
                 <text if="{{$item.type === 'text'}}" style="font-size: 32px; font-weight: 500; {{isSelf() ? 'text-align: right' : ''}}">{{$item.data.text}}</text>
                 <text elif="{{$item.type === 'at'}}">@{{$item.data.name??$item.data.qq}}</text>
                 <div elif="{{$item.type === 'image'}}" style="min-height: 250px">
@@ -41,7 +41,7 @@
                     </better-online-image>
                 </div>
                 <img elif="{{$item.type === 'face'}}" src="/common/face/{{$item.data.id}}.png" style="width:48px;height:48px"></img>
-                <text elif="{{$item.type === 'record'}}">[语音]{{record_status}}</text>
+                <text elif="{{$item.type === 'record'}}" onclick="onclick">[语音]{{record_status}}</text>
                 <text elif="{{$item.type === 'file'}}">[文件 {{$item.data.file}}]</text>
                 <div elif="{{$item.type === 'forward'}}" style="display: flex;flex-direction: column;">
                     <text>合并转发</text>
@@ -62,9 +62,10 @@
 <script>
 //1
 import audio from "@system.audio";
+import router from "@system.router";
 
 export default {
-    props: ["msg"],
+    props: ["msg","type","target"],
     data:{
       reply_name:null,
       reply_msg:null,
@@ -140,6 +141,19 @@ export default {
     },
     getSenderRoleBarText(role) {
         return role === "owner" ? "群主" : role === "admin" ? "管理员" : "成员";
+    },
+    async onLongPress(){
+    const role = this.msg.group_id?(await global.qq.Account.getGroupMemberInfo(this.msg.self_id,this.msg.group_id)).role:""
+      router.push({
+        uri: "pages/msgInfo",
+        params: {
+          msgId:this.msg.message_id,
+          admin:role === "owner"||role === "admin",
+          sender:this.msg.sender.user_id,
+          type:this.type,
+          target:this.target,
+        }
+      })
     }
 }
 </script>
