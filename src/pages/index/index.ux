@@ -1,8 +1,5 @@
-<import
-  name="better-online-image"
-  src="@components/BetterOnlineImage/BetterOnlineImage.ux"
-></import>
-<import name="switch-bar" src="@components/SwitchBar/SwitchBar.ux"></import>
+<import name="better-online-image" src="@components/BetterOnlineImage/BetterOnlineImage.ux" />
+<import name="switch-bar" src="@components/SwitchBar/SwitchBar.ux" />
 
 <template>
   <div class="page">
@@ -16,17 +13,13 @@
       ontouchend="touchend"
     >
       <switch-bar title="消息列表"></switch-bar>
+
       <div
         for="{{ virtualList }}"
         tid="$item.item.msgId"
-        style="position: absolute;top:{{ $item.offset }}px;"
+        style="position: absolute; top: {{ $item.offset }}px;"
       >
-        <div
-          style="{{ getScale($item.offset) }}"
-          class="item"
-          onclick="openChat($item.item)"
-          if="{{ shouldShow($item) }}"
-        >
+        <div class="item item-visible" onclick="openChat($item.item)" if="{{ shouldShow($item) }}">
           <div class="line">
             <better-online-image
               border-radius="99px"
@@ -35,7 +28,6 @@
               cache-time="86400000"
               src="{{ getAvatar($item.item) }}"
             ></better-online-image>
-            <!-- 一天 -->
             <text class="title">{{ $item.item.peerName }}</text>
             <text class="time">{{ $app.$def.getTimestampStr($item.item.msgTime) }}</text>
           </div>
@@ -45,23 +37,29 @@
             </text>
           </div>
         </div>
-        <div class="item" else></div>
+
+        <!-- 占位容器，保持整体高度，避免可视区外渲染 -->
+        <div class="item item-placeholder" else></div>
       </div>
 
-      <text style="width: 0px; height: 0px; opacity: 0.0">{{scrollY}}</text>
+      <text style="width: 0px; height: 0px; opacity: 0">{{ scrollY }}</text>
       <text class="refresh" style="top:{{ refreshTop }}px;" show="{{ refreshTop>-50 }}">
         {{ refreshText }}
       </text>
-      <image class="refresh" src="/common/loading_reversed_transparent.gif" if="{{ loading }}"></image>
+      <image
+        class="refresh"
+        src="/common/loading_reversed_transparent.gif"
+        if="{{ loading }}"
+      ></image>
     </scroll>
   </div>
 </template>
 
 <script>
 //小米傻逼linter你完了
-import router from "@system.router";
-import { getAvatarUrl } from "../../qq/avatarHelper";
-import { getMessagesPreview } from "../../qq/message";
+import router from "@system.router"
+import {getAvatarUrl} from "../../qq/avatarHelper"
+import {getMessagesPreview} from "../../qq/message"
 
 //const pageSize = 7
 const itemHeight = 126
@@ -100,32 +98,11 @@ export default {
   getPreview(msg) {
     return getMessagesPreview(msg.message)
   },
-  getScale(offset) {
-    const scrollY = this.scrollY /*
 
-    if (offset + itemHeight < scrollY || offset > scrollY + 466) {
-      return `scale:0.5;transform-origin: 200px 116px;`
-    } */
-    const halfItemHeight = itemHeight / 2
-
-    let scaleValue
-    let transformOrigin
-
-    if (offset < scrollY + itemHeight) {
-      const diff = offset - scrollY + halfItemHeight
-      scaleValue = Math.max(0, Math.min(80, diff)) / 160 + 0.5
-      transformOrigin = "200px 116px"
-    } else {
-      const diff = -offset + 466 + scrollY - halfItemHeight
-      scaleValue = Math.max(0, Math.min(80, diff)) / 160 + 0.5
-      transformOrigin = "200px 0px"
-    }
-
-    return `scale:${scaleValue};transform-origin: ${transformOrigin};`
-  },
   shouldShow(item) {
     return item.offset + itemHeight > this.scrollY && item.offset < this.scrollY + 466
   },
+
   async gRC() {
     this.recent_msg = (await global.qq.List.getRecentContact()).data
     this.loading = false
@@ -148,21 +125,8 @@ export default {
   },
   scroll({scrollY}) {
     this.scrollY = scrollY
-    if (scrollY == 0) {
-      this.scrollToppd = true
-    } else {
-      this.scrollToppd = false
-    }
-    /* const newOffset = Math.max(0, Math.floor((scrollY - headerHeight) / itemHeight))
-    if (newOffset - offset > 2 || offset - newOffset > 0) {
-    if (debounceTimer) {
-      clearTimeout(debounceTimer)
-    }
-    debounceTimer = setTimeout(() => {
-      offset = newOffset
-      this.updateVirtualList(offset)
-    }, debounceTime)
-    } */
+    this.scrollToppd = scrollY === 0
+    /* 若后续需要做窗口复用，可在此处计算 newOffset 并调用 updateVirtualList */
   },
   scrolltop() {
     this.scrollToppd = true
@@ -177,16 +141,14 @@ export default {
     const deltaY = currentY - this.startY
     if (deltaY < 0) return (this.scrollable = true)
     this.scrollable = false
-    // 定义一个阻力系数，随着下拉距离增加而增大，使下拉越来越难
+    // 阻力系数：下拉越多越难
     const resistanceFactor = 0.003
     const adjustedDeltaY = deltaY / (1 + resistanceFactor * deltaY)
     this.refreshTop = Math.min(480, adjustedDeltaY - 50)
     if (deltaY > 100) {
-      // 松开手指后，判断是否超过阈值
       this.loading = true
       this.refreshText = "松开刷新"
     } else {
-      // 未超过阈值，重置
       this.loading = false
       this.refreshText = "下拉刷新"
     }
@@ -194,7 +156,7 @@ export default {
   touchend() {
     if (!this.scrollToppd) return
     this.scrollable = true
-    this.refreshTop = -50 // 重置刷新状态
+    this.refreshTop = -50
     if (this.refreshText == "松开刷新") {
       this.loading = true
       try {
@@ -209,9 +171,11 @@ export default {
 
 <style lang="less">
 @import "@less/global.less";
+
 .list {
   align-items: center;
 }
+
 .item {
   height: 116px;
   background-color: #262626;
@@ -222,6 +186,30 @@ export default {
   margin-top: 10px;
   transform-origin: 200px 58px;
 }
+
+.item-visible {
+  animation-name: listFadeIn;
+  animation-duration: 400ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+  will-change: opacity, transform;
+}
+
+.item-placeholder {
+  opacity: 0;
+}
+
+@keyframes listFadeIn {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .title {
   font-size: 32px;
   flex: 1;
