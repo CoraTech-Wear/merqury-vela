@@ -46,6 +46,14 @@ export async function getGroupMessageHistory(id: string, messageSeq: string, cou
     }));
 }
 
+export async function getPrivateMessageHistory(id: string, messageSeq: string, count: number=10) {
+    return (await sendNapCatPostRequest("/get_friend_msg_history", {
+        user_id: id,
+        message_seq: messageSeq,
+        count
+    }));
+}
+
 export async function getMessage(id: string){
     return (await sendNapCatPostRequest("/get_msg", {
         message_id: id

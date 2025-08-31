@@ -33,7 +33,7 @@
                 <text elif="{{$item.type === 'at'}}">@{{$item.data.qq}}</text>
                 <div elif="{{$item.type === 'image'}}" style="min-height: 250px">
                     <better-online-image
-                        height="250px"
+                        max-height="250px"
                         src="{{$item.data.url}}"
                         border-radius="36px"
                         cache-time="86400000"

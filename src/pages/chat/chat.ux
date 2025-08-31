@@ -27,6 +27,8 @@ export default {
   async loadMessages(){
     if (this.chatType == 2){
         this.messages = (await global.qq.Message.getGroupMessageHistory(this.chatTargetId)).data.messages;
+    }else{
+        this.messages = (await global.qq.Message.getPrivateMessageHistory(this.chatTargetId)).data.messages;
     }
 
     setTimeout(() => {
