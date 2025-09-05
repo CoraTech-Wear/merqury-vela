@@ -1,0 +1,152 @@
+<import name="input-method" src="@components/InputMethod/InputMethod.ux"></import>
+
+<template>
+  <div if="{{showComp && !keyboardHide}}" class="base">
+    <!-- 傻逼vela支持animation但不完全支持，实现递减只能reverse，故使用两层div实现 -->
+    <div class="imebox {{animExtClassIB}}">
+      <div class="imebox-opa {{animExtClass}}">
+        <input-method if="{{global_show}}" hide={{keyboardHide}} @complete="InputEvent" @delete="InputDelete" screentype="{{screentype}}" vibratemode="short"></input-method>
+      </div>
+    </div>
+    <!-- 这真没办法了 只能绝对定位 -->
+    <image class="extbtnL {{animExtClass}}" src="/common/keyboard_emoji.png" style="position: absolute; left: -20px; top: 141px"></image>
+    <image class="extbtnR {{animExtClassABR}}" src="/common/keyboard_ok.png" style="position: absolute; right: 14px; top: 141px" @click="InputFinish"></image>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    keyboardHide: {
+      default: false
+    }
+  },
+  data: {
+    global_show: false,
+    input_text: "",
+    screentype: "",
+    showComp: true,
+    animExtClass: "",
+    animExtClassIB: "",
+    animExtClassABR: ""
+  },
+  InputEvent(evt) {
+    this.input_text += evt.detail.content
+  },
+  InputDelete() {
+    this.input_text = this.input_text.slice(0, -1)
+  },
+  ExitInput() {
+    this.$emit("exit")
+  },
+  InputFinish() {
+    this.animExtClass = "anim-rev";
+    this.animExtClassIB = "anim-rev-nor";
+    this.animExtClassABR = "anim-rev-nor";
+    
+    setTimeout(() => {
+      this.showComp = false;
+      this.animExtClass = "";
+      this.animExtClassIB = "";
+      this.animExtClassABR = "";
+
+      this.$emit("ok", {
+        content: this.input_text
+      })
+    }, 150)
+  },
+  async InitScreenType() {
+    this.screentype = global.DEVICE_INFO.screenShape
+    this.global_show = true
+  },
+  watchKeyboardHideProp() {
+    // 重新渲染以显示动画
+    this.showComp = false;
+    this.showComp = true;
+  },
+  onInit() {
+    this.InitScreenType()
+    this.$watch("keyboardHide", "watchKeyboardHideProp");
+  }
+}
+</script>
+
+<style lang="less">
+@import "@less/global.less";
+
+// Reverse
+@keyframes KeyboardFadeIn {
+  0% {
+    transform: translateY(0px)
+  }
+  100% {
+    transform: translateY(400px)
+  }
+}
+
+@keyframes KeyboardFadeInOpa {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@keyframes KeyboardExtensionKeyFadeIn {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(34px);
+  }
+}
+
+.base {
+  position: absolute;
+  width: @screenWidth;
+  height: @screenHeight;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.imebox {
+  position: absolute;
+  width: @screenWidth;
+  height: @screenHeight;
+  animation-name: KeyboardFadeIn;
+  animation-duration: 250ms;
+  animation-direction: reverse;
+  animation-timing-function: ease;
+}
+
+.imebox-opa {
+  position: absolute;
+  bottom: 0;
+  width: @screenWidth;
+  height: 68%;
+  animation-name: KeyboardFadeInOpa;
+  animation-duration: 500ms;
+  animation-timing-function: ease;
+}
+
+.extbtnL {
+  animation-name: KeyboardExtensionKeyFadeIn;
+  animation-duration: 250ms;
+  animation-timing-function: ease;
+}
+
+.extbtnR {
+  animation-name: KeyboardExtensionKeyFadeIn;
+  animation-duration: 250ms;
+  animation-timing-function: ease;
+  animation-direction: reverse;
+}
+
+.anim-rev {
+  animation-direction: reverse;
+}
+
+.anim-rev-nor {
+  animation-direction: normal;
+}
+</style>

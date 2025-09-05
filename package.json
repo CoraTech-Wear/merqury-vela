@@ -6,7 +6,7 @@
     "node": ">=8.10"
   },
   "scripts": {
-    "start": "aiot start --watch",
+    "start": "aiot start --watch --enable-protobuf true",
     "build": "aiot build --enable-protobuf",
     "release": "aiot release --enable-jsc --enable-protobuf",
     "lint": "eslint --format codeframe --fix --ext .ux,.js src/"

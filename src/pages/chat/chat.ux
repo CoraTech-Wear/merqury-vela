@@ -1,5 +1,6 @@
 <import name="title-bar" src="@components/TitleBar/TitleBar.ux"></import>
 <import name="qq-message" src="@components/QQComps/Message/Message.ux"></import>
+<import name="input-overlay" src="@components/InputOverlay/InputOverlay.ux"></import>
 
 <template>
   <div class="page">
@@ -10,10 +11,11 @@
         </scroll>
         <div class="actions">
           <img src="/common/mic.png" class="action" />
-          <img src="/common/keyboard.png" class="action" />
+          <img src="/common/keyboard.png" class="action" @click="showInput" />
         </div>
         <image style="position: absolute; top: 230px" src="/common/loading_reversed.gif" if="{{ !messages }}"></image>
     </scroll>
+    <input-overlay @ok="inputOK" keyboard-hide="{{hideInput}}" style="position: absolute"></input-overlay>
   </div>
 </template>
 
@@ -26,7 +28,8 @@ export default {
   },
   private: {
     scrclass: "",
-    messages: null
+    messages: null,
+    hideInput: true
   },
   async loadMessages(){
     if (this.chatType == 2){
@@ -41,6 +44,12 @@ export default {
             behavior: "instant"
         })
     }, 800) // 也许它可能需要一些渲染时间 我不知道 但好像真是
+  },
+  inputOK(data) {
+    this.hideInput = true;
+  },
+  showInput() {
+    this.hideInput = false;
   },
   onReady(){
     global.logger.log(`Load: ${this.chatTargetName} ${this.chatTargetId} ${this.chatType}`)
