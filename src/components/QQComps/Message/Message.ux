@@ -41,7 +41,7 @@
                     </better-online-image>
                 </div>
                 <img elif="{{$item.type === 'face'}}" src="/common/face/{{$item.data.id}}.png" style="width:48px;height:48px"></img>
-                <text elif="{{$item.type === 'record'}}" onclick="onclick">[语音]{{record_status}}</text>
+                <text elif="{{$item.type === 'record'}}" onclick="playRecord">[语音]{{record_status}}</text>
                 <text elif="{{$item.type === 'file'}}">[文件 {{$item.data.file}}]</text>
                 <div elif="{{$item.type === 'forward'}}" style="display: flex;flex-direction: column;">
                     <text>合并转发</text>
@@ -80,7 +80,7 @@ export default {
         this.reply_time = this.$app.$def.getTimestampStr(reply.time)
       }
     },
-    async onclick(){
+    async playRecord(){
       if(this.msg.message[0].type === 'record'){
         const res = await new Promise((resolve, reject) => {
             audio.getPlayState({
@@ -103,14 +103,14 @@ export default {
             this.record_status = `${audio.currentTime}/${audio.duration} `
         }, 100) */
         audio.onplay = () => {
-            this.record_status = "点击暂停。"
+            this.record_status = "点击暂停"
         }
         audio.onpause = () => {
-            this.record_status = "点击播放。"
+            this.record_status = "点击播放"
             clearInterval(interval)
         }
         audio.onended = () => {
-            this.record_status = "点击播放。"
+            this.record_status = "点击播放"
             setTimeout(() => {
             audio.stop()
             }, 500)

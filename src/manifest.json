@@ -47,7 +47,7 @@
   ],
   "config": {
     "logLevel": "log",
-    "designWidth": "device-width"
+    "designWidth": "466"
   },
   "router": {
     "entry": "pages/splash",

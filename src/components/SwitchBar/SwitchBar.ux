@@ -4,17 +4,15 @@
   <div>
     <div if="{{!useRowLayout}}" class="comp-root">
       <time-view style="position: absolute"></time-view>
-      <div class="bar" @click="SwitchPage()">
-        <image src="/common/switch.png"></image>
+      <div class="bar">
         <text style="font-weight: 600; font-size: 30px; margin-left: 15px">
           {{ title }}
         </text>
       </div>
     </div>
     <div if="{{useRowLayout}}" class="comp-root row">
-      <div class="bar bar-row" style="{{barRowStyle}}" @click="SwitchPage()">
+      <div class="bar bar-row" style="{{barRowStyle}}">
         <div style="align-items: center; justify-content: center">
-          <image src="/common/switch.png" style="object-fit: scale-down; width: 32px; height: 32px"></image>
           <text style="font-weight: 600; font-size: 30px; margin-left: 15px">
             {{ title }}
           </text>

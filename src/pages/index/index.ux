@@ -12,7 +12,7 @@
       ontouchmove="touchmove"
       ontouchend="touchend"
     >
-      <switch-bar title="消息列表"></switch-bar>
+      <switch-bar title="NapCatQQ"></switch-bar>
 
       <div
         for="{{ virtualList }}"
@@ -33,7 +33,8 @@
           </div>
           <div class="line">
             <text class="content">
-              {{ $item.item.chatType !== 1 ?  $item.item.lastestMsg.sender.nickname+":":"" }}{{ getPreview($item.item.lastestMsg) }}
+              {{ $item.item.chatType !== 1 ? $item.item.lastestMsg.sender.nickname + ":" : ""
+              }}{{ getPreview($item.item.lastestMsg) }}
             </text>
           </div>
         </div>
@@ -52,6 +53,10 @@
         if="{{ loading }}"
       ></image>
     </scroll>
+    <div class="actions">
+      <img src="/common/settings.png" class="action" />
+      <img src="/common/my.png" class="action" />
+    </div>
   </div>
 </template>
 
@@ -252,5 +257,23 @@ export default {
   padding: 10px;
   border-radius: 99px;
   transform-origin: 50% 50%;
+}
+
+.actions {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 466px;
+  height: 91px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.action {
+  position: relative;
+  margin-left: 5px;
+  margin-right: 5px;
+  box-shadow: 0px 12px 24px 0px rgba(0, 0, 0, 0.4);
+  border-radius: 99px;
 }
 </style>
