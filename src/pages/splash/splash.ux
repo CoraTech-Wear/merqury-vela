@@ -10,7 +10,7 @@ import router from "@system.router";
 export default {
     jumpToPage(){
         let product = global.DEVICE_INFO.product;
-        global.logger.info(`Running on product ${product}`);
+        global.logger.log(`Running on product ${product}`);
 
         if(product.includes("Band") || product.includes("band") || product.includes("手环")) {
             router.replace({
