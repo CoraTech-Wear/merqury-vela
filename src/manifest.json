@@ -51,6 +51,9 @@
     },
     {
       "name": "system.record"
+    },
+    {
+      "name": "system.app"
     }
   ],
   "config": {
