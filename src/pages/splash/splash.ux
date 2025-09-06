@@ -8,16 +8,27 @@
 import router from "@system.router";
 
 export default {
+    jumpToPage(){
+        let product = global.DEVICE_INFO.product;
+        global.logger.info(`Running on product ${product}`);
+
+        if(product.includes("Band") || product.includes("band") || product.includes("手环")) {
+            router.replace({
+                uri: "pages/errors/bandnotsupport"
+            })
+            return;
+        }
+
+        router.replace({
+            uri: "pages/index"
+        })
+    },
     onInit(){
         setTimeout(() => {
-            router.replace({
-                uri: "pages/index"
-            })
+            this.jumpToPage();
         }, 1500);
         global.ready?.then(()=>{
-            router.replace({
-                uri: "pages/index"
-            })
+            this.jumpToPage();
         })
     }
 }

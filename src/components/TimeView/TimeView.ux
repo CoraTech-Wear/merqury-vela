@@ -2,15 +2,16 @@
   <div class="time-comp" style="{{compStyle}}">
     <div if="{{!useRectTime}}">
       <div class="circle-time">
-        <text class="timetxt r1">{{ hourHigh }}</text>
-        <text class="timetxt r2">{{ hourLow }}</text>
-        <text class="timetxt r3">:</text>
-        <text class="timetxt r4">{{ minuteHigh }}</text>
-        <text class="timetxt r5">{{ minuteLow }}</text>
+        <text class="digit r1">{{ hourHigh }}</text>
+        <text class="digit r2">{{ hourLow }}</text>
+        <text class="digit r3">:</text>
+        <text class="digit r4">{{ minuteHigh }}</text>
+        <text class="digit r5">{{ minuteLow }}</text>
       </div>
     </div>
+
     <div if="{{useRectTime}}" class="rect">
-      <text class="timetxt rect-txt">{{ hourHigh }}{{ hourLow }}:{{ minuteHigh }}{{ minuteLow }}</text>
+      <text class="rect-txt">{{ hourHigh }}{{ hourLow }}:{{ minuteHigh }}{{ minuteLow }}</text>
     </div>
   </div>
 </template>
@@ -28,19 +29,14 @@ export default {
   UpdateTime() {
     const hour = this.$app.$def.dayjs().hour()
     const minute = this.$app.$def.dayjs().minute()
-
-    this.hourHigh = Math.floor(hour / 10).toString()
-    this.hourLow = (hour % 10).toString()
-
-    this.minuteHigh = Math.floor(minute / 10).toString()
+    this.hourHigh  = Math.floor(hour / 10).toString()
+    this.hourLow   = (hour % 10).toString()
+    this.minuteHigh= Math.floor(minute / 10).toString()
     this.minuteLow = (minute % 10).toString()
   },
   onInit() {
     this.UpdateTime()
-
-    setInterval(() => {
-      this.UpdateTime()
-    }, 2000)
+    setInterval(() => { this.UpdateTime() }, 2000)
 
     const deviceInfo = global.DEVICE_INFO
     if (deviceInfo.screenShape == "rect") {
@@ -63,11 +59,9 @@ export default {
   top: -2px;
 }
 
-.circle-time {
-  justify-content: flex-start;
-}
+.circle-time { justify-content: flex-start; }
 
-.timetxt {
+.digit {
   font-size: 32px;
   font-weight: bold;
   text-align: center;
@@ -79,28 +73,23 @@ export default {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.rect-txt {
-  font-size: 30px;
-  padding: 0px;
+.rect {
+  align-items: center;
+  justify-content: center;
 }
 
-.r1 {
-  transform: rotate(-10deg);
-  top: 4px;
+.rect-txt {
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 42px;
+  width: auto;
+  height: auto;
+  color: rgba(255, 255, 255, 0.6);
 }
-.r2 {
-  transform: rotate(-5deg);
-  top: 1px;
-}
-.r4 {
-  transform: rotate(5deg);
-  top: 1px;
-}
-.r5 {
-  transform: rotate(10deg);
-  top: 4px;
-}
-.r3 {
-  top: -3px;
-}
+
+.r1 { transform: rotate(-10deg); top: 4px; }
+.r2 { transform: rotate(-5deg);  top: 1px; }
+.r4 { transform: rotate(5deg);   top: 1px; }
+.r5 { transform: rotate(10deg);  top: 4px; }
+.r3 { top: -3px; }
 </style>

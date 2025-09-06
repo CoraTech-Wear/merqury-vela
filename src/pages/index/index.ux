@@ -55,8 +55,8 @@
       ></image>
     </scroll>
     <div class="actions">
-      <image-button style="margin-left: 5px; margin-right: 5px;" cover-style="border-radius: 100%" src="/common/settings.png" type="action"></image-button>
-      <image-button style="margin-left: 5px; margin-right: 5px;" cover-style="border-radius: 100%" src="/common/my.png" type="action" @click="showInput"></image-button>
+      <image-button style="margin-left: 5px; margin-right: 5px;" src="/common/settings.png" type="action"></image-button>
+      <image-button style="margin-left: 5px; margin-right: 5px;" src="/common/my.png" type="action" @click="showInput"></image-button>
     </div>
   </div>
 </template>
@@ -106,7 +106,7 @@ export default {
   },
 
   shouldShow(item) {
-    return item.offset + itemHeight > this.scrollY && item.offset < this.scrollY + 466
+    return item.offset + itemHeight > this.scrollY && item.offset < this.scrollY + global.DEVICE_INFO.screenHeight + 100
   },
 
   async gRC() {

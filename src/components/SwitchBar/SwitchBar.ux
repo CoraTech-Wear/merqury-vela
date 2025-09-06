@@ -3,21 +3,16 @@
 <template>
   <div>
     <div if="{{!useRowLayout}}" class="comp-root">
-      <time-view style="position: absolute"></time-view>
-      <div class="bar">
-        <text style="font-weight: 600; font-size: 30px; margin-left: 15px">
-          {{ title }}
-        </text>
+      <time-view style="position: absolute;"></time-view>
+      <div class="titlebar" @click="SwitchPage">
+        <text class="title-text" style="margin-top: 3px;">{{ title }}</text>
       </div>
     </div>
+
     <div if="{{useRowLayout}}" class="comp-root row">
-      <div class="bar bar-row" style="{{barRowStyle}}">
-        <div style="align-items: center; justify-content: center">
-          <text style="font-weight: 600; font-size: 30px; margin-left: 15px">
-            {{ title }}
-          </text>
-        </div>
-        <time-view style="position: absolute"></time-view>
+      <div class="titlebar bar-row" style="{{barRowStyle}}" @click="SwitchPage">
+        <text class="title-text">{{ title }}</text>
+        <time-view style="position: relative;"></time-view>
       </div>
     </div>
   </div>
@@ -32,13 +27,10 @@ export default {
     useRowLayout: false
   },
   SwitchPage() {
-    var pagename = router.getState().name.split("/")
-
+    const pagename = router.getState().name.split("/")
     router.push({
       uri: "pages/arealist",
-      params: {
-        lastpage: pagename[pagename.length - 1]
-      }
+      params: { lastpage: pagename[pagename.length - 1] }
     })
   },
   onInit() {
@@ -70,15 +62,24 @@ export default {
   flex-direction: row;
 }
 
-.bar {
-  align-items: center;
-  flex-direction: row;
+.titlebar {
   margin-top: 45px;
-  padding-bottom: 15px;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
 }
 
 .bar-row {
+  justify-content: flex-start;
   margin-top: 10px;
   margin-left: 100px;
+}
+
+.title-text {
+  font-size: 32px;
+  font-weight: 600;
+  lines: 1;
+  text-overflow: ellipsis;
+  max-width: 250px;
 }
 </style>

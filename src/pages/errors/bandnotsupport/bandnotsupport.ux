@@ -7,14 +7,32 @@
       style="justify-content: center; align-items: center"
     >
       <div>
-        <text>不支持手环设备，建议使用搭载Xring芯片的手表产品运行</text>
+        <text @click="textClick">{{tip}}</text>
       </div>
     </scroll>
   </div>
 </template>
 
 <script>
-export default {}
+import router from "@system.router";
+
+export default {
+  private: {
+    tip: "不支持手环设备，建议使用搭载Xring芯片的手表产品运行",
+    clickCount: 0
+  },
+  textClick(){
+    this.clickCount += 1;
+    if(this.clickCount === 5) {
+      this.tip = "你点你妈呢"
+    }
+    if(this.clickCount === 15) {
+      router.replace({
+        uri: "pages/index"
+      })
+    }
+  }
+}
 </script>
 
 <style lang="less">
