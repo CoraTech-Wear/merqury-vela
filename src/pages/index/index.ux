@@ -1,5 +1,6 @@
 <import name="better-online-image" src="@components/BetterOnlineImage/BetterOnlineImage.ux" />
 <import name="switch-bar" src="@components/SwitchBar/SwitchBar.ux" />
+<import name="image-button" src="@components/ImageButton/ImageButton.ux"></import>
 
 <template>
   <div class="page">
@@ -54,8 +55,8 @@
       ></image>
     </scroll>
     <div class="actions">
-      <img src="/common/settings.png" class="action" />
-      <img src="/common/my.png" class="action" />
+      <image-button style="margin-left: 5px; margin-right: 5px;" cover-style="border-radius: 100%" src="/common/settings.png" type="action"></image-button>
+      <image-button style="margin-left: 5px; margin-right: 5px;" cover-style="border-radius: 100%" src="/common/my.png" type="action" @click="showInput"></image-button>
     </div>
   </div>
 </template>

@@ -76,7 +76,7 @@ export default {
       this.div_style["minHeight"] = this.height
     }
     const url = await getImage(this.src, this.cacheTime)
-    global.logger.log("[BetterOnlineImage] Image Saved in: " + url)
+    global.logger.log(`[BetterOnlineImage] Image ${this.src} Saved in: ` + url)
     this.$emit("loaded", {
       uri: url
     })

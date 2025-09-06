@@ -1,6 +1,7 @@
 <import name="title-bar" src="@components/TitleBar/TitleBar.ux"></import>
 <import name="qq-message" src="@components/QQComps/Message/Message.ux"></import>
 <import name="input-overlay" src="@components/InputOverlay/InputOverlay.ux"></import>
+<import name="image-button" src="@components/ImageButton/ImageButton.ux"></import>
 
 <template>
   <div class="page">
@@ -10,8 +11,8 @@
             <qq-message for="{{ messages }}" msg="{{ $item }}" type="{{ chatType }}" target="{{chatTargetId}}"></qq-message>
         </scroll>
         <div class="actions">
-          <img src="/common/mic.png" class="action" />
-          <img src="/common/keyboard.png" class="action" @click="showInput" />
+          <image-button style="margin-left: 5px; margin-right: 5px;" cover-style="border-radius: 100%" src="/common/mic.png" type="action"></image-button>
+          <image-button style="margin-left: 5px; margin-right: 5px;" cover-style="border-radius: 100%" src="/common/keyboard.png" type="action" @click="showInput"></image-button>
         </div>
         <image style="position: absolute; top: 230px" src="/common/loading_reversed.gif" if="{{ !messages }}"></image>
     </scroll>
@@ -20,6 +21,8 @@
 </template>
 
 <script>
+import prompt from "@system.prompt";
+
 export default {
   public: {
     chatTargetName: "聊天",
@@ -41,12 +44,26 @@ export default {
     setTimeout(() => {
         this.$element('msgscroll').scrollTo({
             top: 99999, // It just works.
-            behavior: "instant"
+            behavior: "smooth"
         })
     }, 800) // 也许它可能需要一些渲染时间 我不知道 但好像真是
   },
-  inputOK(data) {
+  async inputOK(data) {
     this.hideInput = true;
+
+    if(data.detail.confirmPressed){
+      if(data.detail.content){
+        let msg = [{type: "text", data: {text: data.detail.content}}]
+        if (this.chatType == 2){
+          await global.qq.Message.sendGroupMessage(this.chatTargetId, msg);
+        }
+      }
+      else {
+        prompt.showToast({
+          message: "不可发送空消息"
+        })
+      }
+    }
   },
   showInput() {
     this.hideInput = false;
@@ -61,20 +78,13 @@ export default {
 <style lang="less">
 @import "@less/global.less";
 .actions {
-    position: absolute;
-    bottom: 0px;
-    left: 0;
-    width: 466px;
-    height: 91px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-.action{
-  position: relative;
-  margin-left: 5px;
-  margin-right: 5px;
-  box-shadow: 0px 12px 24px 0px rgba(0, 0, 0, 0.4);
-  border-radius: 99px;
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 466px;
+  height: 91px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 </style>

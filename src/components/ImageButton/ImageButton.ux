@@ -1,0 +1,140 @@
+<template>
+    <div ontouchstart="onTouch" ontouchend="onTouchEnd" if="{{render}}" class="base {{divClass}}" style="{{divStyle}}" @click="emitClick">
+        <img src="{{imgSrc}}" class="baseImg {{getImageClass}}" />
+        <div class="opa-cover {{coverClass}}" style="{{coverDivStyle}}"></div>
+    </div>
+</template>
+
+<script>
+export default {
+    data: {
+        imgSrc: "",
+        btnType: "",
+        coverDivStyle: "",
+        divStyle: "",
+        divClass: "",
+        coverClass: "opa-cover-no-anim",
+        render: true,
+    },
+    props: ["src", "type", "style", "coverStyle"],
+    reRender(){
+        this.render = false;
+        this.render = true;
+    },
+    watchSrcProp(newV, oldV){
+        this.imgSrc = newV;
+        this.reRender();
+    },
+    watchBtnTypeProp(newV, oldV){
+        this.btnType = newV;
+        this.reRender();
+    },
+    watchDivStyleProp(newV, oldV){
+        this.divStyle = newV;
+        this.reRender();
+    },
+    watchCoverDivStyleProp(newV, oldV){
+        this.coverDivStyle = newV;
+        this.reRender();
+    },
+    getImageClass(){
+        switch(this.btnType) {
+            case "action":
+                return "action";
+            default:
+                break;
+        }
+
+        return ""
+    },
+    emitClick(){
+        this.$emit("click", {});
+    },
+    onTouch(){
+        this.divClass = "divanim-press-start";
+        this.coverClass = "divanim-press-coveropa-start";
+    },
+    onTouchEnd(){
+        this.divClass = "divanim-press-end";
+        this.coverClass = "divanim-press-coveropa-end";
+        setTimeout(() => {
+            this.coverClass = "opa-cover-no-anim";
+        }, 150)
+    },
+    onInit(){
+        this.imgSrc = this.src;
+        this.btnType = this.type;
+        this.divStyle = this.style;
+        this.coverDivStyle = this.coverStyle;
+
+        this.$watch("src", "watchSrcProp");
+        this.$watch("type", "watchBtnTypeProp");
+        this.$watch("style", "watchDivStyleProp");
+        this.$watch("coverStyle", "watchCoverDivStyleProp");
+    }
+};
+</script>
+
+<style lang="less">
+@import "@less/global.less";
+
+@keyframes PressIn   { from {transform: scale(1)}   to {transform: scale(0.9)} }
+@keyframes PressOut  { from {transform: scale(0.9)} to {transform: scale(1)} }
+
+@keyframes PressInOpa   { from {opacity: 0.0} to {opacity: 0.5} }
+@keyframes PressOutOpa  { from {opacity: 0.5} to {opacity: 0.0} }
+
+.base {
+    transform: scale(1);
+    transform-origin: 50% 50%;
+}
+
+.baseImg {
+    object-fit: scale-down;
+}
+
+.divanim-press-start {
+    animation-name: PressIn;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+.divanim-press-end {
+    animation-name: PressOut;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+.divanim-press-coveropa-start {
+    animation-name: PressInOpa;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+.divanim-press-coveropa-end {
+    animation-name: PressOutOpa;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+.opa-cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+// 傻逼vela不能硬编码opacity，会和keyframes冲突
+// 给个0ms动画顶着
+.opa-cover-no-anim {
+    animation-name: PressOutOpa;
+    animation-duration: 0ms;
+    animation-timing-function: ease;
+}
+
+.action{
+  position: relative;
+  box-shadow: 0px 12px 24px 0px rgba(0, 0, 0, 0.4);
+  border-radius: 99px;
+}
+</style>

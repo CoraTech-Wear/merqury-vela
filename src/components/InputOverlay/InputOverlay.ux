@@ -1,16 +1,19 @@
 <import name="input-method" src="@components/InputMethod/InputMethod.ux"></import>
 
 <template>
-  <div if="{{showComp && !keyboardHide}}" class="base">
+  <div if="{{showComp && !keyboardHide}}" class="base {{animExtClassBase}}">
+    <scroll class="preview-area" scroll-y="true" bounces="true" @click="InputFinish(false)">
+      <text>{{input_text}}</text>
+    </scroll>
     <!-- 傻逼vela支持animation但不完全支持，实现递减只能reverse，故使用两层div实现 -->
-    <div class="imebox {{animExtClassIB}}">
-      <div class="imebox-opa {{animExtClass}}">
+    <div class="imebox-opa {{animExtClass}}">
+      <div class="imebox {{animExtClassIB}}">
         <input-method if="{{global_show}}" hide={{keyboardHide}} @complete="InputEvent" @delete="InputDelete" screentype="{{screentype}}" vibratemode="short"></input-method>
       </div>
     </div>
     <!-- 这真没办法了 只能绝对定位 -->
     <image class="extbtnL {{animExtClass}}" src="/common/keyboard_emoji.png" style="position: absolute; left: -20px; top: 141px"></image>
-    <image class="extbtnR {{animExtClassABR}}" src="/common/keyboard_ok.png" style="position: absolute; right: 14px; top: 141px" @click="InputFinish"></image>
+    <image class="extbtnR {{animExtClassABR}}" src="/common/keyboard_ok.png" style="position: absolute; right: 14px; top: 141px" @click="InputFinish(true)"></image>
   </div>
 </template>
 
@@ -28,7 +31,8 @@ export default {
     showComp: true,
     animExtClass: "",
     animExtClassIB: "",
-    animExtClassABR: ""
+    animExtClassABR: "",
+    animExtClassBase: "",
   },
   InputEvent(evt) {
     this.input_text += evt.detail.content
@@ -39,20 +43,24 @@ export default {
   ExitInput() {
     this.$emit("exit")
   },
-  InputFinish() {
+  InputFinish(confirmPressed) {
     this.animExtClass = "anim-rev";
     this.animExtClassIB = "anim-rev-nor";
     this.animExtClassABR = "anim-rev-nor";
+    this.animExtClassBase = "base-anim-close";
     
     setTimeout(() => {
       this.showComp = false;
       this.animExtClass = "";
       this.animExtClassIB = "";
       this.animExtClassABR = "";
+      this.animExtClassBase = "";
 
       this.$emit("ok", {
-        content: this.input_text
+        content: this.input_text,
+        confirmPressed
       })
+      this.input_text = "";
     }, 150)
   },
   async InitScreenType() {
@@ -86,10 +94,10 @@ export default {
 
 @keyframes KeyboardFadeInOpa {
   0% {
-    opacity: 0.5;
+    opacity: 0.0;
   }
   100% {
-    opacity: 1.0;
+    opacity: 0.9;
   }
 }
 
@@ -104,9 +112,30 @@ export default {
 
 .base {
   position: absolute;
+  align-items: flex-start;
+  justify-content: center;
   width: @screenWidth;
   height: @screenHeight;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 1);
+  animation-name: KeyboardFadeInOpa;
+  animation-duration: 250ms;
+  animation-timing-function: ease;
+}
+
+.base-anim-close {
+  animation-name: KeyboardFadeInOpa;
+  animation-direction: reverse;
+  animation-duration: 250ms;
+  animation-timing-function: ease;
+}
+
+.preview-area {
+  margin-top: 50px;
+  width: 250px;
+  height: 100px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-height: 100px;
 }
 
 .imebox {
@@ -124,9 +153,6 @@ export default {
   bottom: 0;
   width: @screenWidth;
   height: 68%;
-  animation-name: KeyboardFadeInOpa;
-  animation-duration: 500ms;
-  animation-timing-function: ease;
 }
 
 .extbtnL {
