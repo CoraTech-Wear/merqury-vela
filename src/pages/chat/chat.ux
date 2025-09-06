@@ -22,6 +22,8 @@
 
 <script>
 import prompt from "@system.prompt";
+import record from "@system.router";
+import app from "@system.app";
 
 export default {
   public: {
@@ -67,6 +69,16 @@ export default {
   },
   showInput() {
     this.hideInput = false;
+  },
+  sendRecord() {
+    if(app.canIUse('@system.record')){
+
+    }
+    else{
+      prompt.showToast({
+        message: "当前设备不支持录音接口"
+      })
+    }
   },
   onReady(){
     global.logger.log(`Load: ${this.chatTargetName} ${this.chatTargetId} ${this.chatType}`)
