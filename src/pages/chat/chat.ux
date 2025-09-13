@@ -58,6 +58,8 @@ export default {
         let msg = [{type: "text", data: {text: data.detail.content}}]
         if (this.chatType == 2){
           await global.qq.Message.sendGroupMessage(this.chatTargetId, msg);
+        }else {
+          await global.qq.Message.sendPrivateMessage(this.chatTargetId, msg)
         }
       }
       else {
