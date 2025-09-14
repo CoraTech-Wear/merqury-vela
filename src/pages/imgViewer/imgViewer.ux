@@ -3,7 +3,7 @@
 <template>
     <div class="page">
         <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
-            <title-bar title="{{ chatTargetName }}"></title-bar>
+            <title-bar title="图片查看"></title-bar>
             <better-online-image
                 max-height="250px"
                 src="{{src}}"
