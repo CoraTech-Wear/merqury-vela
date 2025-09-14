@@ -10,3 +10,4 @@
 **/.DS_Store
 
 src/buildinfo.ts
+package-lock.json

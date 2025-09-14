@@ -33,12 +33,14 @@
                 <text elif="{{$item.type === 'at'}}">@{{$item.data.name??$item.data.qq}}</text>
                 <div elif="{{$item.type === 'image'}}" style="min-height: 250px">
                     <better-online-image
+                        if="{{!noImg}}"
                         max-height="250px"
                         src="{{$item.data.url}}"
                         border-radius="36px"
                         cache-time="86400000"
                     >
                     </better-online-image>
+                    <text elif="{{noImg}}" style="color: #0D6EFF" onclick="gotoImgViewer($item.data.url)">[查看图片]</text>
                 </div>
                 <img elif="{{$item.type === 'face'}}" src="/common/face/{{$item.data.id}}.png" style="width:48px;height:48px"></img>
                 <text elif="{{$item.type === 'record'}}" onclick="playRecord">[语音]{{record_status}}</text>
@@ -71,6 +73,7 @@ export default {
       reply_msg:null,
       reply_time:null,
     record_status:"点击播放。",
+    noImg:false
     },
     async onInit() {
       if(this.msg.message[0].type === 'reply'){
@@ -79,6 +82,7 @@ export default {
         this.reply_msg = global.qq.Message.getMessagesPreview(reply.message)
         this.reply_time = this.$app.$def.getTimestampStr(reply.time)
       }
+      this.noImg = global.config.read(c => c.noimgMode);
     },
     async playRecord(){
       if(this.msg.message[0].type === 'record'){
@@ -141,6 +145,14 @@ export default {
     },
     getSenderRoleBarText(role) {
         return role === "owner" ? "群主" : role === "admin" ? "管理员" : "成员";
+    },
+    gotoImgViewer(src){
+        router.push({
+            uri: 'pages/imgViewer',
+            params: {
+                src: src
+            }
+        })
     },
     async onLongPress(){
     const role = this.msg.group_id?(await global.qq.Account.getGroupMemberInfo(this.msg.self_id,this.msg.group_id)).role:""

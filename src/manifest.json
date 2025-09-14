@@ -58,32 +58,38 @@
   ],
   "config": {
     "logLevel": "log",
-    "designWidth": "466"
+    "designWidth": "466",
+	"background": {
+	"features": ["system.request"]
+	}
   },
   "router": {
     "entry": "pages/splash",
     "pages": {
-      "pages/splash": {
-        "component": "splash"
-      },
-      "pages/index": {
-        "component": "index"
-      },
-      "pages/errors/bandnotsupport": {
-        "component": "bandnotsupport"
-      },
-      "pages/test/comptest": {
-        "component": "comptest"
-      },
-      "pages/arealist": {
-        "component": "arealist"
-      },
-      "pages/chat": {
-        "component": "chat"
-      },
-      "pages/msgInfo": {
-        "component": "msgInfo"
-      }
-    }
+	"pages/splash": {
+		"component": "splash"
+	},
+	"pages/index": {
+		"component": "index"
+	},
+	"pages/errors/bandnotsupport": {
+		"component": "bandnotsupport"
+	},
+	"pages/test/comptest": {
+		"component": "comptest"
+	},
+	"pages/arealist": {
+		"component": "arealist"
+	},
+	"pages/chat": {
+		"component": "chat"
+	},
+	"pages/msgInfo": {
+		"component": "msgInfo"
+	},
+	"pages/imgViewer": {
+		"component": "imgViewer"
+	}
+}
   }
 }

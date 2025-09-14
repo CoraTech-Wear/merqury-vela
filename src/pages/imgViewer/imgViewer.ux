@@ -1,0 +1,28 @@
+<import name="title-bar" src="@components/TitleBar/TitleBar.ux"></import>
+<import name="better-online-image" src="@components/BetterOnlineImage/BetterOnlineImage.ux"></import>
+<template>
+    <div class="page">
+        <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
+            <title-bar title="{{ chatTargetName }}"></title-bar>
+            <better-online-image
+                max-height="250px"
+                src="{{src}}"
+                border-radius="0px"
+                cache-time="86400000"
+            >
+            </better-online-image>
+        </scroll>
+      </div>
+</template>
+
+<script>
+export default {
+    public: {
+        src: ''
+    }
+};
+</script>
+
+<style lang="less">
+@import "@less/global.less";
+</style>

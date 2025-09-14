@@ -4,13 +4,15 @@ const CONFIG_PATH = "internal://files/config.json";
 
 export interface AppConfig {
     napcat_httpserver_url: string,
-    napcat_httpserver_token: string
+    napcat_httpserver_token: string,
+    noimgMode: boolean
 }
 
 function defaultConfig(): AppConfig {
     return {
-        napcat_httpserver_url: "http://192.168.1.202:3000",
-        napcat_httpserver_token: "123qwq"
+        napcat_httpserver_url: "",
+        napcat_httpserver_token: "",
+        noimgMode: true
     };
 }
 
