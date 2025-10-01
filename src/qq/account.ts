@@ -1,7 +1,11 @@
 import { sendNapCatPostRequest } from "./request";
-
-export function getAccountInfo(qid){
-
+import { LocalCacheManager } from "../cache";
+import storageFile from "../utils/storage";
+const cache = new LocalCacheManager(storageFile);
+export async function getAccountInfo(qid){
+    return (await sendNapCatPostRequest("/get_stranger_info", {
+        user_id: qid
+    })).data
 }
 
 export async function getGroupMemberInfo(qid:number, gid:number){
