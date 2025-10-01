@@ -1,3 +1,10 @@
+# NapCat-QQ
+一个为Xiaomi Vela设备打造的OICQ客户端.
+
+Works with [NapCat](https://napneko.github.io/)
+
+交流: [QQ群](https://qm.qq.com/q/tpOnEHXyRa)
+
 ## 快速上手
 
 ### 1. 开发
