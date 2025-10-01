@@ -5,14 +5,16 @@ const CONFIG_PATH = "internal://files/config.json";
 export interface AppConfig {
     napcat_httpserver_url: string,
     napcat_httpserver_token: string,
-    noimgMode: boolean
+    noimgMode: boolean,
+    animationEnabled: boolean
 }
 
 function defaultConfig(): AppConfig {
     return {
         napcat_httpserver_url: "",
         napcat_httpserver_token: "",
-        noimgMode: true
+        noimgMode: true,
+        animationEnabled: false
     };
 }
 

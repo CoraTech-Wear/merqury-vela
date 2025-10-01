@@ -23,6 +23,7 @@
         <div class="item item-visible" onclick="openChat($item.item)" if="{{ shouldShow($item) }}">
           <div class="line">
             <better-online-image
+              if="{{!noImg}}"
               border-radius="99px"
               width="42px"
               height="42px"
@@ -86,7 +87,8 @@ export default {
     refreshText: "下拉刷新",
     refreshTop: -50,
     loading: true,
-    scrollY: 0
+    scrollY: 0,
+    noImgMode: false
   },
   openChat(msg) {
     router.push({
@@ -116,6 +118,7 @@ export default {
   },
   async onInit() {
     try {
+      this.noImgMode = global.config.read(c => c.noimgMode);
       await this.gRC()
     } catch (e) {
       global.logger.error(e)
