@@ -1,4 +1,4 @@
-# NapCat-QQ
+# Merqury for Vela
 一个为Xiaomi Vela设备打造的OICQ客户端.
 
 Works with [NapCat](https://napneko.github.io/)
