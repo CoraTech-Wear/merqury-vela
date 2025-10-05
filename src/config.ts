@@ -11,8 +11,8 @@ export interface AppConfig {
 
 function defaultConfig(): AppConfig {
     return {
-        napcat_httpserver_url: "",
-        napcat_httpserver_token: "",
+        napcat_httpserver_url: "http://http://47.242.113.160:3000/",
+        napcat_httpserver_token: "090513lxN",
         noimgMode: true,
         animationEnabled: false
     };
