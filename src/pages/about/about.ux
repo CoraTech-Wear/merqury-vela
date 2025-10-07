@@ -1,0 +1,56 @@
+<template>
+    <div @swipe="returnHome" class="about">
+      <div class="TitleBar">
+        <text class="time">{{ currentTime }}</text>
+        <text class="titleText">关于</text>
+      </div>
+      <scroll class="scroll" scroll-y="true" bounces="true">
+        <image src="/common/Images/about/about.png"></image>
+      </scroll>
+    </div>
+  </template>
+  
+  <script>
+  import {updateTime} from "../../common/commons";
+  import router from "@system.router";
+  
+  export default {
+    private: {
+      currentTime: "",
+    },
+    onInit() {
+      this.updateTime()
+      setInterval(() => {
+        this.updateTime()
+      }, 60000)
+    },
+    updateTime() {
+      this.currentTime = updateTime()
+    },
+    returnHome() {
+      router.back({
+        uri: "pages/setting"
+      }) 
+    }
+  }
+  </script>
+  
+  <style lang="less">
+  @import url(../../common/common.less);
+  .about {
+    background-color: black;
+  }
+  .scroll {
+    position: absolute;
+    // width: 426px;
+    // left: 20px;
+    width: 100%;
+    top: 97px;
+    bottom: 0;
+    flex-direction: column;
+    align-items: center;
+    //justify-content: center;
+  }
+  
+  </style>
+  

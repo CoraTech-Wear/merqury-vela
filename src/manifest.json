@@ -98,6 +98,9 @@
   },
   "pages/serverURLConfig": {
     "component": "input"
+  },
+  "pages/about": {
+    "component": "about"
   }
 }
   }
