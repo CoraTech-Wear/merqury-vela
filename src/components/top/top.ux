@@ -1,0 +1,41 @@
+<template>
+    <div class="TitleBar">
+      <text class="time">{{ currentTime }}</text>
+      <text class="titleText">{{title}}</text>
+  </div>
+</template>
+
+<script>
+import vibrator from "@system.vibrator";
+import device from '@system.device'
+import {updateTime} from "../../common/commons";
+export default {
+  props: {
+    title: {
+      default: '页面标题',
+    },
+  },
+  data: {
+currentTime: updateTime(),
+  },
+  onInit() {
+    setInterval(() => {
+      this.currentTime = updateTime()
+    }, 10000)
+  },
+  /*addAllTxt(txt) {
+    this.$emit("complete", { content: txt });
+  },*/
+};
+</script>
+
+<style>
+@import url('../../common/common.less');
+.page {
+	width:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+
+</style>

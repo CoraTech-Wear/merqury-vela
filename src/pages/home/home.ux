@@ -1,0 +1,62 @@
+<import name="ImageButton" src="../../components/ImageButton/ImageButton"></import>
+<import name="better-online-image" src="@components/BetterOnlineImage/BetterOnlineImage.ux" />
+<import name="switch-bar" src="@components/SwitchBar/SwitchBar.ux" />
+<import name="image-button" src="@components/ImageButton/ImageButton.ux"></import>
+
+<template>
+  <div class="page">
+    <scroll
+      class="scroll {{ scrclass }} list"
+      scroll-y="{{ scrollable }}"
+      bounces="{{true}}"
+    >
+      <switch-bar title="MerquryIM"></switch-bar>
+
+      <div
+        for="{{ virtualList }}"
+        tid="$item.item.msgId"
+        style="position: absolute; top: {{ $item.offset }}px;"
+      >
+        <div class="item item-visible" onclick="openChat($item.item)" if="{{ shouldShow($item) }}">
+          <div class="line">
+            <better-online-image
+              if="{{!noImg}}"
+              border-radius="99px"
+              width="42px"
+              height="42px"
+              cache-time="86400000"
+              src="{{ getAvatar($item.item) }}"
+            ></better-online-image>
+            <text class="title">{{ $item.item.peerName }}</text>
+            <text class="time">{{ $app.$def.getTimestampStr($item.item.msgTime) }}</text>
+          </div>
+          <div class="line">
+            <text class="content">
+              {{ $item.item.chatType !== 1 ? $item.item.lastestMsg.sender.nickname + ":" : ""
+              }}{{ getPreview($item.item.lastestMsg) }}
+            </text>
+          </div>
+        </div>
+
+        <!-- 占位容器，保持整体高度，避免可视区外渲染 -->
+        <div class="item item-placeholder" else></div>
+      </div>
+
+      <text style="width: 0px; height: 0px; opacity: 0">{{ scrollY }}</text>
+      <text class="refresh" style="top:{{ refreshTop }}px;" show="{{ refreshTop>-50 }}">
+        {{ refreshText }}
+      </text>
+      <image
+        class="refresh"
+        src="/common/loading_reversed_transparent.gif"
+        if="{{ loading }}"
+      ></image>
+    </scroll>
+    <div class="actions">
+      <image-button style="margin-left: 5px; margin-right: 5px;" src="/common/settings.png" type="action"></image-button>
+      <image-button style="margin-left: 5px; margin-right: 5px;" src="/common/my.png" type="action" @click="showInput"></image-button>
+      <image-button style="margin-left: 5px; margin-right: 5px;" src="" type="action"></image-butoon>
+    </div>
+  </div>
+</template>
+
