@@ -13,7 +13,7 @@
       ontouchmove="touchmove"
       ontouchend="touchend"
     >
-      <switch-bar title="NapCatQQ"></switch-bar>
+      <switch-bar title="MerquryIM"></switch-bar>
 
       <div
         for="{{ virtualList }}"

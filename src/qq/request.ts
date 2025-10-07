@@ -20,7 +20,7 @@ export async function sendNapCatPostRequest<T>(api: string, params: any): Promis
         });
         return (promiseRet.data.data as NapCatResponse<T>);
     } catch (err) {
-        global.logger.error(`NapCat Post request failed: ${err}`);
+        global.logger.error(`NapCat Post request failed: ${JSON.stringify(err)}`);
         throw err;
     }
 }

@@ -5,6 +5,7 @@
   "engines": {
     "node": ">=8.10"
   },
+  "license":"AGPL-3.0-only",
   "scripts": {
     "start": "aiot start --watch --enable-protobuf true",
     "build": "aiot build --enable-protobuf",

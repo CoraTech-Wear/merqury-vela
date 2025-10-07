@@ -2,12 +2,12 @@
 <import name="topbar" src="../../components/top/top.ux"></import>
 <template>
   <div @swipe="back" class="page">
-    <image src="/common/Images/about/bg.png" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></image>
+    <!-- <image src="/common/Images/about/bg.png" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></image> -->
     <!--div class="TitleBar">
         <text class="time">{{ currentTime }}</text>
         <text class="titleText">绑定手机号</text>
     </div-->
-    <topbar title="Token"></topbar>
+    <topbar title="Server"></topbar>
     <div class="box">
       <div class="btn" @click="showHideKeyboard">
         <text class="btnText">{{ phoneNum }}</text>
@@ -31,7 +31,6 @@
 import {updateTime} from "../../common/commons";
 import router from "@system.router";
 import device from "@system.device";
-import storage from "../../common/storage";
 import prompt from "@system.prompt";
 
 export default {
@@ -52,18 +51,12 @@ export default {
         this.screenShape = data.screenShape
       }
     })
-    storage.get({
-      key: "phoneNum",
-      default: "",
-      success: (data) => {
-        this.phoneNum = data
-      } 
-    })
+    this.phoneNum = global.config.read(c => c.napcat_httpserver_token)
   },
   updateTime() {
     this.currentTime = updateTime()
   },
-  savePhoneNum() {
+savePhoneNum() {
     if(this.phoneNum.length === 0){
       prompt.showToast({
         message: "请输入Token",
@@ -71,25 +64,11 @@ export default {
       })
       return
     }
-    storage.set({
-      key: "phoneNum",
-      value: this.phoneNum,
-      success: () => {
-        console.log("保存成功");
-        prompt.showToast({
-          message: "保存成功",
-          duration: 500
-        });
-        setTimeout(()=> {router.replace({
-          uri: 'pages/startup'
-        })}, 500)
-      },
-      fail: (data, code) => {
-        prompt.showToast({
-          message: "保存手机号失败," + data + code,
-          duration: 1000
-        })
-      }
+    global.config.write(cfg => {
+      cfg.napcat_httpserver_token = this.phoneNum;
+    });
+    router.push({
+      uri: 'pages/splash'
     })
   },
   deletePhoneNum() {
@@ -106,7 +85,7 @@ export default {
   back(e) {
     if(e.direction=='right'){
       router.replace({
-        uri: "pages/home"
+        uri: "pages/index"
       })
     }
   }

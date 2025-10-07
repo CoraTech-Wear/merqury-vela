@@ -5,6 +5,8 @@
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
       <title-bar title="功能列表"></title-bar>
       <input type="button" value="组件测试" @click="goCT"></input>
+      <input type="button" value="设置token" @click="goSetting('token')"></input>
+      <input type="button" value="设置URL" @click="goSetting('server')"></input>
     </scroll>
   </div>
 </template>
@@ -19,6 +21,15 @@ export default {
   goCT() {
     router.push({
       uri: "pages/test/comptest"
+    })
+  },
+  goSetting(page){
+    const settings = {
+      "token": "pages/serverSecretConfig",
+      "server": "pages/serverURLConfig"
+    }
+    router.push({
+      uri: settings[page]
     })
   }
 }

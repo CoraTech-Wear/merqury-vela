@@ -92,7 +92,13 @@
 	},
 	"pages/imgViewer": {
 		"component": "imgViewer"
-	}
+	},
+  "pages/serverSecretConfig": {
+    "component": "input"
+  },
+  "pages/serverURLConfig": {
+    "component": "input"
+  }
 }
   }
 }
