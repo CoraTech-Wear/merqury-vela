@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import string2list from './string2list';
+// import string2list from './string2list';
 export default {
   props: {
     multiline: {
@@ -25,8 +25,7 @@ export default {
     pro_value: ["111", "111"]
   },
   onInit() {
-    // todo: 修复字符串转列表
-    this.pro_value = string2list(this.props.value)
+    this.pro_value = eval(this.value)
   }
 }
 </script>
