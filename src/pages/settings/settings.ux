@@ -5,7 +5,7 @@
   <div class="page">
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
       <title-bar title="设置"></title-bar>
-      <input-item multiLine="{{true}}" title="服务器URL" value="{{test}}"></input-item>
+      <input-item multiLine="{{false}}" title="服务器URL" value="{{serverURL}}" fn="{{'server'}}"></input-item>
     </scroll>
   </div>
 </template>
@@ -16,24 +16,15 @@ import router from "@system.router"
 export default {
   private: {
     scrclass: "",
+    serverURL: "",
     test: ["1207826398", "2701652670"]
+  },
+  onInit() {
+    this.serverURL = global.config.read(c => c.napcat_httpserver_url);
   },
   goCT() {
     router.push({
       uri: "pages/test/comptest"
-    })
-  },
-  goSetting(page){
-    const settings = {
-      "token": "pages/settings/serverSecretConfig",
-      "server": "pages/settings/serverURLConfig",
-      "dialogCount": "pages/settings/dialogCountConfig",
-      "messageCount": "pages/settings/messageCountConfig",
-      "about": "pages/about"
-    }
-    
-    router.push({
-      uri: settings[page]
     })
   }
 }

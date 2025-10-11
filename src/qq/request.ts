@@ -2,7 +2,7 @@ import { fetch } from "../tsimports";
 import { NapCatResponse } from "./types";
 
 export async function sendNapCatPostRequest<T>(api: string, params: any): Promise<NapCatResponse<T>> {
-    let baseUrl = global.config.read(c => c.napcat_httpserver_url);
+    let baseUrl = "http://"+global.config.read(c => c.napcat_httpserver_url);
     let token = global.config.read(c => c.napcat_httpserver_token);
 
     global.logger.log(`Sending NapCat Post to ${baseUrl}${api} with params ${JSON.stringify(params)}`);

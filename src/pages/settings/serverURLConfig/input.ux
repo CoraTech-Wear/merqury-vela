@@ -18,7 +18,7 @@
       </div>
       <text style="width:100%;height: 40px;color: #ffffff60;text-align:center;font-size:30px">应用将重启以应用更改</text>
     </div>
-    <input-method hide="{{keyboardHide}}" keyboardtype="QWERTY" maxlength="5" screentype="{{screenShape}}"
+    <input-method hide="{{keyboardHide}}" keyboardtype="QWERTY" maxlength="5" screentype="rect"
       @delete="deletePhoneNum" @complete="complete"></input-method>
     <text style="position: absolute; top: 118px; right: 40px; color: #fff; font-size: 24px" if="{{!keyboardHide}}"
       onclick="showHideKeyboard">

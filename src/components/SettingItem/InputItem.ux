@@ -1,9 +1,9 @@
 <template>
-  <div class="item">
+  <div class="item" onclick="goSetting">
     <div class="content">
       <text class="title">{{title}}</text>
       <text if="{{!multiline}}" class="textValue">{{value}}</text>
-      <div show="{{multiline}}" for="{{pro_value}}">
+      <div elif="{{multiline}}" for="{{pro_value}}">
         <text class="textValue">{{$item}}</text>
       </div>
     </div>
@@ -13,19 +13,34 @@
 
 <script>
 // import string2list from './string2list';
+import router from "@system.router";
 export default {
   props: {
     multiline: {
       default: false
     },
     title: {},
-    value: {}
+    value: {},
+    fn: {}
   },
   data: {
     pro_value: ["111", "111"]
   },
   onInit() {
     this.pro_value = eval(this.value)
+  },
+  goSetting(page){
+    const settings = {
+      "token": "pages/settings/serverSecretConfig",
+      "server": "pages/settings/serverURLConfig",
+      "dialogCount": "pages/settings/dialogCountConfig",
+      "messageCount": "pages/settings/messageCountConfig",
+      "about": "pages/about"
+    }
+    console.log(settings[this.fn])
+    router.push({
+      uri: settings[this.fn]
+    })
   }
 }
 </script>
