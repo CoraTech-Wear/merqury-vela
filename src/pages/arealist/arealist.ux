@@ -7,6 +7,8 @@
       <input type="button" value="组件测试" @click="goCT"></input>
       <input type="button" value="设置token" @click="goSetting('token')"></input>
       <input type="button" value="设置URL" @click="goSetting('server')"></input>
+      <input type="button" value="设置会话数量" @click="goSetting('dialogCount')"></input>
+      <input type="button" value="设置消息数量" @click="goSetting('messageCount')"></input>
       <input type="button" value="关于" @click="goSetting('about')"></input>
     </scroll>
   </div>
@@ -26,8 +28,10 @@ export default {
   },
   goSetting(page){
     const settings = {
-      "token": "pages/serverSecretConfig",
-      "server": "pages/serverURLConfig",
+      "token": "pages/settings/serverSecretConfig",
+      "server": "pages/settings/serverURLConfig",
+      "dialogCount": "pages/settings/dialogCountConfig",
+      "messageCount": "pages/settings/messageCountConfig",
       "about": "pages/about"
     }
     

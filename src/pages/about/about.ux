@@ -1,56 +1,71 @@
 <template>
-    <div @swipe="returnHome" class="about">
-      <div class="TitleBar">
-        <text class="time">{{ currentTime }}</text>
-        <text class="titleText">关于</text>
-      </div>
-      <scroll class="scroll" scroll-y="true" bounces="true">
-        <image src="/common/Images/about/about.png"></image>
-      </scroll>
+  <div @swipe="returnHome" style="height: {{screenHeight}}px;" class="about">
+    <!-- <image class="background" src="../../common/Images/about/Background.png"></image> -->
+    <div class="TitleBar">
+      <text class="time">{{ currentTime }}</text>
+      <text class="titleText">关于</text>
     </div>
-  </template>
-  
-  <script>
-  import {updateTime} from "../../common/commons";
-  import router from "@system.router";
-  
-  export default {
-    private: {
-      currentTime: "",
-    },
-    onInit() {
+    <scroll class="scroll" scroll-y="true" bounces="true">
+      <image src="/common/Images/about/about.png"></image>
+    </scroll>
+  </div>
+</template>
+
+<script>
+import {updateTime} from "../../common/commons"
+import router from "@system.router"
+import device from "@system.device"
+
+export default {
+  private: {
+    currentTime: "",
+    screenHeight: 466
+  },
+  onInit() {
+    this.updateTime()
+    setInterval(() => {
       this.updateTime()
-      setInterval(() => {
-        this.updateTime()
-      }, 60000)
-    },
-    updateTime() {
-      this.currentTime = updateTime()
-    },
-    returnHome() {
-      router.back({
-        uri: "pages/setting"
-      }) 
-    }
+    }, 60000)
+    device.getInfo({
+      success: (data) => {
+        this.screenHeight = data.screenHeight
+      }
+    })
+  },
+  updateTime() {
+    this.currentTime = updateTime()
+  },
+  returnHome() {
+    router.back({
+      uri: "pages/setting"
+    })
   }
-  </script>
-  
-  <style lang="less">
-  @import url(../../common/common.less);
-  .about {
-    background-color: black;
-  }
-  .scroll {
-    position: absolute;
-    // width: 426px;
-    // left: 20px;
-    width: 100%;
-    top: 97px;
-    bottom: 0;
-    flex-direction: column;
-    align-items: center;
-    //justify-content: center;
-  }
-  
-  </style>
-  
+}
+</script>
+
+<style lang="less">
+@import url(../../common/common.less);
+
+.background {
+  position: absolute;
+  left: -120px;
+  top: -208px;
+  opacity: 0.55;
+}
+.about {
+  background-color: black;
+  bottom: 0px;
+  overflow: hidden;
+}
+.scroll {
+  position: absolute;
+  // width: 426px;
+  // left: 20px;
+  width: 100%;
+  top: 97px;
+  bottom: 0;
+  flex-direction: column;
+  align-items: center;
+  //justify-content: center;
+}
+</style>

@@ -6,6 +6,8 @@ export interface AppConfig {
     napcat_httpserver_url: string,
     napcat_httpserver_token: string,
     noimgMode: boolean,
+    dialogCount: number,
+    messageCount: number,
     animationEnabled: boolean
 }
 
@@ -14,6 +16,8 @@ function defaultConfig(): AppConfig {
         napcat_httpserver_url: "",
         napcat_httpserver_token: "",
         noimgMode: true,
+        dialogCount: 10,
+        messageCount: 10,
         animationEnabled: false
     };
 }

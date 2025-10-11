@@ -1,0 +1,44 @@
+<import name="title-bar" src="@components/TitleBar/TitleBar.ux"></import>
+<import name="input-item" src="@components/SettingItem/InputItem.ux"></import>
+
+<template>
+  <div class="page">
+    <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
+      <title-bar title="设置"></title-bar>
+      <input-item type="list" title="服务器URL" value="{{test}}"></input-item>
+    </scroll>
+  </div>
+</template>
+
+<script>
+import router from "@system.router"
+
+export default {
+  private: {
+    scrclass: "",
+    test: ["1207826398", "2701652670"]
+  },
+  goCT() {
+    router.push({
+      uri: "pages/test/comptest"
+    })
+  },
+  goSetting(page){
+    const settings = {
+      "token": "pages/settings/serverSecretConfig",
+      "server": "pages/settings/serverURLConfig",
+      "dialogCount": "pages/settings/dialogCountConfig",
+      "messageCount": "pages/settings/messageCountConfig",
+      "about": "pages/about"
+    }
+    
+    router.push({
+      uri: settings[page]
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import '@less/global.less';
+</style>

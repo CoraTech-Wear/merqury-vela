@@ -1,8 +1,9 @@
 <template>
   <div class="page">
-    <image src="/common/logo.png"></image>
+    <image src="/common/Images/logo/logo.png"></image>
   </div>
 </template>
+
 
 <script>
 import router from "@system.router";

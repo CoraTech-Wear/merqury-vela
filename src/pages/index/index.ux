@@ -56,7 +56,7 @@
       ></image>
     </scroll>
     <div class="actions">
-      <image-button style="margin-left: 5px; margin-right: 5px;" src="/common/settings.png" type="action"></image-button>
+      <image-button style="margin-left: 5px; margin-right: 5px;" src="/common/settings.png" type="action" @click="settings"></image-button>
       <image-button style="margin-left: 5px; margin-right: 5px;" src="/common/my.png" type="action" @click="showInput"></image-button>
     </div>
   </div>
@@ -112,7 +112,8 @@ export default {
   },
 
   async gRC() {
-    this.recent_msg = (await global.qq.List.getRecentContact()).data
+    const count = global.config.read(c => c.dialogCount)
+    this.recent_msg = (await global.qq.List.getRecentContact(count)).data
     this.loading = false
     this.updateVirtualList(0)
   },
@@ -174,6 +175,11 @@ export default {
         global.logger.error(e)
       }
     }
+  },
+  settings() {
+    router.push({
+      uri: 'pages/settings'
+    })
   }
 }
 </script>

@@ -1,0 +1,105 @@
+<template>
+  <div class="item">
+    <div class="content">
+      <text class="title">{{title}}</text>
+      <text if="{{!isMultiLine}}" class="textValue">{{value}}</text>
+      <div for="{{pro_value}}">
+        <text class="textValue">{{$item}}</text>
+      </div>
+    </div>
+    <img src="Assets/input.png" class="icon"></img>
+  </div>
+</template>
+
+<script>
+import string2list from './string2list';
+export default {
+  props: {
+    type: {
+      default: "line"
+    },
+    title: {},
+    value: {}
+  },
+  private: {
+    isMultiLine: false,
+    pro_value: ["111", "111"]
+  },
+  onReady() {
+    if (this.props.type == "line"){
+        this.isMultiLine = false;
+    }else {
+        this.isMultiLine = true;
+        //this.pro_value = eval(this.props.value)
+    }
+  }
+}
+</script>
+
+<style class="less">
+.item {
+  /* 自动布局子元素 */
+  width: 400px;
+  min-height: 113px;
+  border-radius: 36px;
+  opacity: 1;
+
+  /* 自动布局 */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px 24px;
+  gap: 2px;
+  align-self: stretch;
+
+  background-color: #262626;
+}
+
+.content {
+  width: 320px;
+  min-height: 81px;
+  opacity: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px;
+  gap: 2px;
+  flex-grow: 1;
+}
+
+.title {
+    width: 320px;
+  height: 37px;
+  opacity: 1;
+
+  font-family: MiSans;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: normal;
+
+  lines: 1;
+  text-overflow: ellipsis;
+
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.textValue {
+  max-width: 320px;
+  height: 42px;
+  opacity: 1;
+
+  font-family: MiSans;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: normal;
+  lines: 1;
+  text-overflow: ellipsis;
+
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.icon {
+    opacity: 0.5;
+}
+</style>

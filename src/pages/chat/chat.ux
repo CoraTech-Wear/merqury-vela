@@ -36,11 +36,11 @@ export default {
     messages: null,
     hideInput: true
   },
-  async loadMessages(){
+  async loadMessages(count){
     if (this.chatType == 2){
-        this.messages = (await global.qq.Message.getGroupMessageHistory(this.chatTargetId)).data.messages;
+        this.messages = (await global.qq.Message.getGroupMessageHistory(this.chatTargetId, undefined, Number(count))).data.messages;
     }else{
-        this.messages = (await global.qq.Message.getPrivateMessageHistory(this.chatTargetId)).data.messages;
+        this.messages = (await global.qq.Message.getPrivateMessageHistory(this.chatTargetId, undefined, Number(count))).data.messages;
     }
 
     setTimeout(() => {
@@ -84,7 +84,8 @@ export default {
   },
   onReady(){
     global.logger.log(`Load: ${this.chatTargetName} ${this.chatTargetId} ${this.chatType}`)
-    this.loadMessages();
+    const messageCount = global.config.read(c => c.messageCount)
+    this.loadMessages(messageCount);
   }
 }
 </script>

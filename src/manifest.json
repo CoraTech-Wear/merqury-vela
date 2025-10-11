@@ -4,7 +4,7 @@
   "versionName": "1.0.0",
   "versionCode": 1,
   "minPlatformVersion": 1000,
-  "icon": "/common/logo.png",
+  "icon": "/common/Images/logo/logo.png",
   "designWidth": 466,
   "deviceTypeList": [
     "watch"
@@ -72,9 +72,6 @@
 	"pages/index": {
 		"component": "index"
 	},
-  "pages/home": {
-    "component": "home"
-  },
 	"pages/errors/bandnotsupport": {
 		"component": "bandnotsupport"
 	},
@@ -93,10 +90,19 @@
 	"pages/imgViewer": {
 		"component": "imgViewer"
 	},
-  "pages/serverSecretConfig": {
+  "pages/settings": {
+    "component": "settings"
+  },
+  "pages/settings/serverSecretConfig": {
     "component": "input"
   },
-  "pages/serverURLConfig": {
+  "pages/settings/serverURLConfig": {
+    "component": "input"
+  },
+  "pages/settings/dialogCountConfig": {
+    "component": "input"
+  },
+  "pages/settings/messageCountConfig": {
     "component": "input"
   },
   "pages/about": {

@@ -40,7 +40,7 @@ export function getMessagesPreview(msg: Messages[]) {
     return preview
 }
 
-export async function getGroupMessageHistory(id: string, messageSeq: string, count: number=10) {
+export async function getGroupMessageHistory(id: string, messageSeq: string="0", count: number=10) {
     return (await sendNapCatPostRequest("/get_group_msg_history", {
         group_id: id,
         message_seq: messageSeq,
@@ -48,7 +48,7 @@ export async function getGroupMessageHistory(id: string, messageSeq: string, cou
     }));
 }
 
-export async function getPrivateMessageHistory(id: string, messageSeq: string, count: number=10) {
+export async function getPrivateMessageHistory(id: string, messageSeq: string="0", count: number=10) {
     return (await sendNapCatPostRequest("/get_friend_msg_history", {
         user_id: id,
         message_seq: messageSeq,

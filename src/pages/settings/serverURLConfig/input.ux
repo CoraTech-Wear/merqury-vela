@@ -1,5 +1,5 @@
-<import name="input-method" src="../../components/InputMethod/InputMethod.ux"></import>
-<import name="topbar" src="../../components/top/top.ux"></import>
+<import name="input-method" src="../../../components/InputMethod/InputMethod.ux"></import>
+<import name="topbar" src="../../../components/top/top.ux"></import>
 <template>
   <div @swipe="back" class="page">
     <!-- <image src="/common/Images/about/bg.png" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></image> -->
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {updateTime} from "../../common/commons";
+import {updateTime} from "../../../common/commons";
 import router from "@system.router";
 import device from "@system.device";
 import prompt from "@system.prompt";
@@ -93,7 +93,7 @@ savePhoneNum() {
 </script>
 
 <style lang="less">
-@import url(../../common/common.less);
+@import url(../../../common/common.less);
 .page {
   background-color: black;
 }
