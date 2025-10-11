@@ -2,8 +2,8 @@
   <div class="item">
     <div class="content">
       <text class="title">{{title}}</text>
-      <text if="{{!isMultiLine}}" class="textValue">{{value}}</text>
-      <div for="{{pro_value}}">
+      <text if="{{!multiline}}" class="textValue">{{value}}</text>
+      <div show="{{multiline}}" for="{{pro_value}}">
         <text class="textValue">{{$item}}</text>
       </div>
     </div>
@@ -15,23 +15,18 @@
 import string2list from './string2list';
 export default {
   props: {
-    type: {
-      default: "line"
+    multiline: {
+      default: false
     },
     title: {},
     value: {}
   },
-  private: {
-    isMultiLine: false,
+  data: {
     pro_value: ["111", "111"]
   },
-  onReady() {
-    if (this.props.type == "line"){
-        this.isMultiLine = false;
-    }else {
-        this.isMultiLine = true;
-        //this.pro_value = eval(this.props.value)
-    }
+  onInit() {
+    // todo: 修复字符串转列表
+    this.pro_value = string2list(this.props.value)
   }
 }
 </script>

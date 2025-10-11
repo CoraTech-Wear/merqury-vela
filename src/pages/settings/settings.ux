@@ -5,7 +5,7 @@
   <div class="page">
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
       <title-bar title="设置"></title-bar>
-      <input-item type="list" title="服务器URL" value="{{test}}"></input-item>
+      <input-item multiLine="{{true}}" title="服务器URL" value="{{test}}"></input-item>
     </scroll>
   </div>
 </template>
