@@ -1,6 +1,10 @@
 # Merqury for Vela
 一个为Xiaomi Vela设备打造的IM客户端.
 
+<a href="https://astrobox.online/open?source=res&res=MerquryIM Dev&provider=official" target="_blank" rel="noopener noreferrer">
+  <img src="https://astrobox.online/goab/en/white.svg">
+</a>
+
 Works with [NapCat](https://napneko.github.io/)
 
 交流: [QQ群](https://qm.qq.com/q/tpOnEHXyRa)
