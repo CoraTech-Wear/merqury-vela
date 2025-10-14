@@ -5,7 +5,7 @@ Works with [NapCat](https://napneko.github.io/)
 
 交流: [QQ群](https://qm.qq.com/q/tpOnEHXyRa)
 
-设计稿: [前往MasterGO](https://mastergo.com/goto/NgVQ7Jbx?page_id=M&file=173515831824865)
+设计稿: [前往MasterGO](https://mastergo.com/goto/NsMqNrKF?page_id=M&file=173877994617234)
 
 ## 快速上手
 
