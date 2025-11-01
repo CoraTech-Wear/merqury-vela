@@ -1,0 +1,66 @@
+<template>
+  <div class="item" onclick="goSetting">
+    <text class="title">{{title}}</text>
+    <img src="Assets/enter.png" class="icon"></img>
+  </div>
+</template>
+
+<script>
+import router from "@system.router"
+export default {
+    props: {
+        title: {},
+        fn: {}
+    },
+    goSetting(page){
+    const settings = {
+      "token": "pages/settings/serverSecretConfig",
+      "server": "pages/settings/serverURLConfig",
+      "dialogCount": "pages/settings/dialogCountConfig",
+      "messageCount": "pages/settings/messageCountConfig",
+      "about": "pages/about"
+    }
+    console.log(settings[this.fn])
+    router.push({
+      uri: settings[this.fn]
+    })
+  }
+}
+</script>
+
+<style lang="less">
+.item {
+  /* 自动布局子元素 */
+  width: 400px;
+  min-height: 90px;
+  border-radius: 36px;
+  opacity: 1;
+
+  /* 自动布局 */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 24px;
+  gap: 2px;
+  align-self: stretch;
+
+  background-color: #262626;
+}
+.title {
+    /* 自动布局子元素 */
+width: 318px;
+height: 42px;
+opacity: 1;
+	
+font-family: MiSans;
+font-size: 32px;
+font-weight: 500;
+line-height: normal;
+	
+font-feature-settings: "kern" on;
+color: rgba(255, 255, 255, 0.9);
+}
+.icon {
+    opacity: 0.5;
+}
+</style>

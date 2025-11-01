@@ -93,10 +93,13 @@
   "pages/settings": {
     "component": "settings"
   },
-  "pages/settings/serverSecretConfig": {
+  "pages/settings/service": {
+    "component": "service"
+  },
+  "pages/settings/service/serverSecretConfig": {
     "component": "input"
   },
-  "pages/settings/serverURLConfig": {
+  "pages/settings/service/serverURLConfig": {
     "component": "input"
   },
   "pages/settings/dialogCountConfig": {

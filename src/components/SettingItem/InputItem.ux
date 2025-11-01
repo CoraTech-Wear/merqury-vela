@@ -2,7 +2,7 @@
   <div class="item" onclick="goSetting">
     <div class="content">
       <text class="title">{{title}}</text>
-      <text if="{{!multiline}}" class="textValue">{{value}}</text>
+      <text if="{{!multiline}}" class="textValue">{{value_}}</text>
       <div elif="{{multiline}}" for="{{pro_value}}">
         <text class="textValue">{{$item}}</text>
       </div>
@@ -19,15 +19,24 @@ export default {
     multiline: {
       default: false
     },
+    secret: {
+      default: false
+    },
     title: {},
     value: {},
     fn: {}
   },
   data: {
-    pro_value: ["111", "111"]
+    pro_value: ["111", "111"],
+    value_: ""
   },
   onInit() {
     this.pro_value = eval(this.value)
+    if (this.secret) {
+      this.value_ = "******";
+    }else{
+      this.value_ = this.value;
+    }
   },
   goSetting(page){
     const settings = {
@@ -60,7 +69,7 @@ export default {
   padding: 16px 24px;
   gap: 2px;
   align-self: stretch;
-
+  margin-bottom: 10px;
   background-color: #262626;
 }
 
