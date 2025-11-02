@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "@less/global.less";
+@import "src/less/global.less";
 
 // Reverse
 @keyframes KeyboardFadeIn {
