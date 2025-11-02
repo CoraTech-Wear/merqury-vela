@@ -13,16 +13,9 @@ export default {
         fn: {}
     },
     goSetting(page){
-    const settings = {
-      "token": "pages/settings/serverSecretConfig",
-      "server": "pages/settings/serverURLConfig",
-      "dialogCount": "pages/settings/dialogCountConfig",
-      "messageCount": "pages/settings/messageCountConfig",
-      "about": "pages/about"
-    }
-    console.log(settings[this.fn])
+    const uri = "pages/"+this.fn;
     router.push({
-      uri: settings[this.fn]
+      uri: uri
     })
   }
 }
@@ -34,6 +27,7 @@ export default {
   width: 400px;
   min-height: 90px;
   border-radius: 36px;
+  margin-bottom: 10px;
   opacity: 1;
 
   /* 自动布局 */

@@ -5,13 +5,8 @@
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
       <title-bar title="功能列表"></title-bar>
       <input type="button" value="组件测试" @click="goCT"></input>
-      <input type="button" value="设置token" @click="goSetting('token')"></input>
-      <input type="button" value="设置URL" @click="goSetting('server')"></input>
-      <input type="button" value="设置会话数量" @click="goSetting('dialogCount')"></input>
-      <input type="button" value="设置消息数量" @click="goSetting('messageCount')"></input>
-      <input type="button" value="关于" @click="goSetting('about')"></input>
     </scroll>
-  </div>
+  </div>  
 </template>
 
 <script>
