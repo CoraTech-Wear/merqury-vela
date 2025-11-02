@@ -5,12 +5,9 @@
 <template>
   <div class="page">
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
-      <title-bar title="设置"></title-bar>
-      <enter-item title="服务" fn="{{'settings/service'}}"></enter-item>
-      <enter-item title="个性化" fn="{{'settings/custom'}}"></enter-item>
-      <enter-item title="性能调优" fn="{{'settings/performance'}}"></enter-item>
-      <enter-item title="关于" fn="{{'about'}}"></enter-item>
-      <div style="height: 90px;width: 400px;"></div>
+      <title-bar title="性能调优"></title-bar>
+      <input-item title="会话数量" value="{{dialogCount}}" fn="{{'settings/performance/dialogCountConfig'}}"></input-item>
+      <input-item title="加载消息数量" value="{{messageCount}}" fn="{{'settings/performance/messageCountConfig'}}"></input-item>
     </scroll>
   </div>
 </template>
@@ -21,12 +18,13 @@ import router from "@system.router"
 export default {
   private: {
     scrclass: "",
-    serverURL: "",
-    serverToken: "",
+    messageCount: "",
+    dialogCount: "",
     test: ["1207826398", "2701652670"]
   },
   onInit() {
-    this.serverURL = global.config.read(c => c.napcat_httpserver_url);
+    this.dialogCount = global.config.read(c => c.dialogCount);
+    this.messageCount = global.config.read(c => c.messageCount);
   },
   goCT() {
     router.push({

@@ -39,16 +39,9 @@ export default {
     }
   },
   goSetting(page){
-    const settings = {
-      "token": "pages/settings/serverSecretConfig",
-      "server": "pages/settings/serverURLConfig",
-      "dialogCount": "pages/settings/dialogCountConfig",
-      "messageCount": "pages/settings/messageCountConfig",
-      "about": "pages/about"
-    }
-    console.log(settings[this.fn])
+    const uri = "pages/"+this.fn;
     router.push({
-      uri: settings[this.fn]
+      uri: uri
     })
   }
 }

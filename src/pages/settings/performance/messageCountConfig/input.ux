@@ -1,0 +1,129 @@
+<import name="input-method" src="../../../../components/InputMethod/InputMethod.ux"></import>
+<import name="topbar" src="../../../../components/top/top.ux"></import>
+<template>
+  <div @swipe="back" class="page">
+    <!-- <image src="/common/Images/about/bg.png" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></image> -->
+    <!--div class="TitleBar">
+        <text class="time">{{ currentTime }}</text>
+        <text class="titleText">绑定手机号</text>
+    </div-->
+    <topbar title="消息数量"></topbar>
+    <div class="box">
+      <div class="btn" @click="showHideKeyboard">
+        <text class="btnText">{{ phoneNum }}</text>
+      </div>
+      <div class="btn" @click="savePhoneNum">
+        <text class="btnText">确定</text>
+        <image src="Forward.png" style="position: absolute;right: 22px;"></image>
+      </div>
+      <text style="width:100%;height: 40px;color: #ffffff60;text-align:center;font-size:30px">应用将重启以应用更改</text>
+    </div>
+    <input-method hide="{{keyboardHide}}" keyboardtype="QWERTY" maxlength="5" screentype="{{screenShape}}"
+      @delete="deletePhoneNum" @complete="complete"></input-method>
+    <text style="position: absolute; top: 118px; right: 40px; color: #fff; font-size: 24px" if="{{!keyboardHide}}"
+      onclick="showHideKeyboard">
+      收起
+    </text>
+  </div>
+</template>
+
+<script>
+import {updateTime} from "../../../../common/commons";
+import router from "@system.router";
+import device from "@system.device";
+import prompt from "@system.prompt";
+
+export default {
+  private: {
+    currentTime: "",
+    phoneNum: "",
+    keyboardHide: true,
+    screenShape: "rect",
+  },
+  onInit() {
+    this.updateTime()
+    setInterval(() => {
+      this.updateTime()
+    }, 60000)
+    device.getInfo({
+      success: (data) => {
+        console.log("device info: " + JSON.stringify(data))
+        this.screenShape = data.screenShape
+      }
+    })
+    this.phoneNum = global.config.read(c => c.messageCount)
+  },
+  updateTime() {
+    this.currentTime = updateTime()
+  },
+savePhoneNum() {
+    if(this.phoneNum.length === 0){
+      prompt.showToast({
+        message: "请输入Token",
+        duration: 3000
+      })
+      return
+    }
+    global.config.write(cfg => {
+      cfg.messageCount = this.phoneNum;
+    });
+    router.push({
+      uri: 'pages/splash'
+    })
+  },
+  deletePhoneNum() {
+    this.phoneNum = this.phoneNum.slice(0, -1)
+    console.log("删除字符")
+  },
+  complete(evt) {
+    this.phoneNum += evt.detail.content
+    console.log("onComplete:" + JSON.stringify(evt))
+  },
+  showHideKeyboard() {
+    this.keyboardHide = !this.keyboardHide
+  },
+  back(e) {
+    if(e.direction=='right'){
+      router.replace({
+        uri: "pages/index"
+      })
+    }
+  }
+}
+</script>
+
+<style lang="less">
+@import url(../../../../common/common.less);
+.page {
+  background-color: black;
+}
+
+.box {
+  position: absolute;
+  width: auto;
+  left: 30px;
+  top: 87px;
+  height: auto;
+  padding: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.btn {
+  width: 406px;
+  height: 80px;
+  padding: 32px 22px;
+  align-items: center;
+  // gap: 10px;
+  border-radius: 30px;
+  background-color: rgba(30, 30, 30, 0.70);
+  margin-bottom: 10px;
+}
+.btnText {
+  color: #FFF;
+  font-size: 30px;
+  font-weight: bold;
+  align-items: center;
+  line-height: normal;
+}
+</style>

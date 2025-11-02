@@ -102,10 +102,13 @@
   "pages/settings/service/serverURLConfig": {
     "component": "input"
   },
-  "pages/settings/dialogCountConfig": {
+  "pages/settings/performance": {
+    "component": "performance"
+  },
+  "pages/settings/performance/dialogCountConfig": {
     "component": "input"
   },
-  "pages/settings/messageCountConfig": {
+  "pages/settings/performance/messageCountConfig": {
     "component": "input"
   },
   "pages/about": {
