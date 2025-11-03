@@ -1,1 +1,18 @@
-{"a":{"b":"default hello"}}
+{
+    "lang": "zh-CN",
+    "index": {
+        "title": "MerquryIM"
+    },
+    "settings": {
+        "main": {
+            "title": "设置"
+        },
+        "service": {
+            "name": "服务",
+            "subitem": {
+                "serverURL": "服务器URL",
+                "serverToken": "服务器Token"
+            }
+        }
+    }
+}

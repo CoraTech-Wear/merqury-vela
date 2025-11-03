@@ -1,6 +1,7 @@
 <import name="better-online-image" src="@components/BetterOnlineImage/BetterOnlineImage.ux" />
 <import name="switch-bar" src="@components/SwitchBar/SwitchBar.ux" />
 <import name="image-button" src="@components/ImageButton/ImageButton.ux"></import>
+<import name="enter-item" src="@components/SettingItem/EnterItem.ux"></import>
 
 <template>
   <div class="page">
@@ -14,7 +15,7 @@
       ontouchend="touchend"
     >
       <switch-bar title="MerquryIM"></switch-bar>
-
+      <enter-item if="{{serverError}}" title="服务器连接失败" fn="{{'errors/serverError'}}"></enter-item>
       <div
         for="{{ virtualList }}"
         tid="$item.item.msgId"
@@ -88,7 +89,8 @@ export default {
     refreshTop: -50,
     loading: true,
     scrollY: 0,
-    noImgMode: false
+    noImgMode: false,
+    serverError: false
   },
   openChat(msg) {
     router.push({
@@ -112,10 +114,18 @@ export default {
   },
 
   async gRC() {
+  try{
     const count = global.config.read(c => c.dialogCount)
     this.recent_msg = (await global.qq.List.getRecentContact(count)).data
     this.loading = false
     this.updateVirtualList(0)
+  }
+  catch (err) {
+    this.loading = false;
+    if(err.code==300){
+      this.serverError = true;
+    }
+  }
   },
   async onInit() {
     try {
