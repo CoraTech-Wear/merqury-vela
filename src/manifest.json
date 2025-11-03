@@ -75,6 +75,9 @@
 	"pages/errors/bandnotsupport": {
 		"component": "bandnotsupport"
 	},
+  "pages/errors/serverError": {
+    "component": "error"
+  },
 	"pages/test/comptest": {
 		"component": "comptest"
 	},

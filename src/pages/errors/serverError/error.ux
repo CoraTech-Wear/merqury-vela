@@ -1,0 +1,81 @@
+<import name="title-bar" src="@components/TitleBar/TitleBar.ux"></import>
+<import name="input-item" src="@components/SettingItem/InputItem.ux"></import>
+<import name="enter-item" src="@components/SettingItem/EnterItem.ux"></import>
+
+<template>
+  <div class="page">
+    <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
+      <title-bar title="错误"></title-bar>
+      <div class="content">
+        <text class="title">{{errorName}}</text>
+        <text class="detail">{{errorDetail}}</text>
+      </div>
+      <enter-item title="服务器配置" fn="{{'about'}}"></enter-item>
+      <div style="height: 90px;width: 400px;"></div>
+    </scroll>
+  </div>
+</template>
+
+<script>
+import router from "@system.router"
+
+export default {
+  private: {
+    scrclass: "",
+    errorName: "服务器连接失败",
+    errorDetail: "服务器发送了无效的响应或无响应, 请检查服务器以及相应服务端配置是否正确. 新配置的服务器请检查服务器防火墙是否放行相关端口"
+  },
+  onInit() {
+    this.serverURL = global.config.read(c => c.napcat_httpserver_url);
+  },
+  goCT() {
+    router.push({
+      uri: "pages/test/comptest"
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import 'src/less/global.less';
+.content {
+/* 自动布局子元素 */
+width: 400px;
+min-height: 90px;
+margin-bottom: 20px;
+border-radius: 36px;
+opacity: 1;
+	
+/* 自动布局 */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 24px;
+gap: 2px;
+	
+background-color: #262626;
+}
+.title {
+    /* 自动布局子元素 */
+width: 100%;
+opacity: 1;
+	
+font-family: MiSans;
+font-size: 32px;
+font-weight: 500;
+line-height: normal;
+color: rgba(255, 255, 255, 0.6);
+}
+.detail {
+    /* 自动布局子元素 */
+
+width: 100%;
+opacity: 1;
+	
+font-family: MiSans;
+font-size: 32px;
+font-weight: 500;
+line-height: normal;
+color: #FFFFFF;
+}
+</style>

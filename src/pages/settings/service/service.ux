@@ -6,8 +6,8 @@
   <div class="page">
     <scroll scroll-y="true" class="scroll {{scrclass}}" bounces="true">
       <title-bar title="服务"></title-bar>
-      <input-item title="服务器URL" value="{{serverURL}}" fn="{{'server'}}"></input-item>
-      <input-item title="服务器Token" secret="{{true}}" value="{{serverToken}}" fn="{{'token'}}"></input-item>
+      <input-item title="服务器URL" value="{{serverURL}}" fn="{{'settings/service/serverURLConfig'}}"></input-item>
+      <input-item title="服务器Token" secret="{{true}}" value="{{serverToken}}" fn="{{'settings/service/serverSecretConfig'}}"></input-item>
     </scroll>
   </div>
 </template>
