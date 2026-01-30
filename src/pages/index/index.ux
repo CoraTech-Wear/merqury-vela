@@ -14,7 +14,7 @@
       ontouchmove="touchmove"
       ontouchend="touchend"
     >
-      <switch-bar title="MerquryIM"></switch-bar>
+      <switch-bar title="消息"></switch-bar>
       <enter-item if="{{serverError}}" title="服务器连接失败" fn="{{'errors/serverError'}}"></enter-item>
       <div
         for="{{ virtualList }}"

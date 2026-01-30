@@ -38,19 +38,15 @@ export default {
     currentTime: "",
     phoneNum: "",
     keyboardHide: true,
-    screenShape: "rect",
+    screenShape: "circle",
   },
   onInit() {
     this.updateTime()
     setInterval(() => {
       this.updateTime()
     }, 60000)
-    device.getInfo({
-      success: (data) => {
-        console.log("device info: " + JSON.stringify(data))
-        this.screenShape = data.screenShape
-      }
-    })
+    const deviceInfo = global.DEVICE_INFO
+    this.screenShape = deviceInfo.screenShape
     this.phoneNum = global.config.read(c => c.napcat_httpserver_token)
   },
   updateTime() {

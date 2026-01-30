@@ -8,6 +8,7 @@
       <title-bar title="性能调优"></title-bar>
       <input-item title="会话数量" value="{{dialogCount}}" fn="{{'settings/performance/dialogCountConfig'}}"></input-item>
       <input-item title="加载消息数量" value="{{messageCount}}" fn="{{'settings/performance/messageCountConfig'}}"></input-item>
+      <input-item title="会话列表刷新频率" value="{{messageCount}}" fn="{{'settings/performance/messageCountConfig'}}"></input-item>
     </scroll>
   </div>
 </template>

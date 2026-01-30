@@ -18,7 +18,7 @@
       </div>
       <text style="width:100%;height: 40px;color: #ffffff60;text-align:center;font-size:30px">应用将重启以应用更改</text>
     </div>
-    <input-method hide="{{keyboardHide}}" keyboardtype="QWERTY" maxlength="5" screentype="rect"
+    <input-method hide="{{keyboardHide}}" keyboardtype="QWERTY" maxlength="5" screentype="{{screenShape}}"
       @delete="deletePhoneNum" @complete="complete"></input-method>
     <text style="position: absolute; top: 118px; right: 40px; color: #fff; font-size: 24px" if="{{!keyboardHide}}"
       onclick="showHideKeyboard">
@@ -38,19 +38,22 @@ export default {
     currentTime: "",
     phoneNum: "",
     keyboardHide: true,
-    screenShape: "rect",
+    screenShape: "circle",
   },
   onInit() {
     this.updateTime()
     setInterval(() => {
       this.updateTime()
     }, 60000)
-    device.getInfo({
-      success: (data) => {
-        console.log("device info: " + JSON.stringify(data))
-        this.screenShape = data.screenShape
-      }
-    })
+    // device.getInfo({
+    //   success: (data) => {
+    //     console.log("device info: " + JSON.stringify(data))
+    //     this.screenShape = data.screenShape
+    //   }
+    // })
+    const deviceInfo = global.DEVICE_INFO
+    this.screenShape = deviceInfo.screenShape
+
     this.phoneNum = global.config.read(c => c.napcat_httpserver_url)
   },
   updateTime() {

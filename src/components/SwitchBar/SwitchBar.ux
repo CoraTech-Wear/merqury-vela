@@ -56,10 +56,12 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .row {
   flex-direction: row;
+  width: 100%;
 }
 
 .titlebar {
@@ -67,12 +69,13 @@ export default {
   align-items: center;
   justify-content: center;
   padding-bottom: 10px;
+  width: 100%;
 }
 
 .bar-row {
-  justify-content: flex-start;
+  justify-content: center;
   margin-top: 10px;
-  margin-left: 100px;
+  //margin-left: 100px;
 }
 
 .title-text {
@@ -81,5 +84,10 @@ export default {
   lines: 1;
   text-overflow: ellipsis;
   max-width: 250px;
+}
+@media (shape: rect) {
+  .title-text {
+    margin-right: 250px;
+  }
 }
 </style>

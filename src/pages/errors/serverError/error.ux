@@ -10,7 +10,7 @@
         <text class="title">{{errorName}}</text>
         <text class="detail">{{errorDetail}}</text>
       </div>
-      <enter-item title="服务器配置" fn="{{'about'}}"></enter-item>
+      <enter-item title="服务器配置" fn="{{'settings/service'}}"></enter-item>
       <div style="height: 90px;width: 400px;"></div>
     </scroll>
   </div>
