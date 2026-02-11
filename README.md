@@ -11,6 +11,21 @@ Works with [NapCat](https://napneko.github.io/)
 
 设计稿: [前往MasterGO](https://mastergo.com/goto/NsMqNrKF?page_id=M&file=173877994617234)
 
+## Features
+
+ - 私聊/群聊文字消息收发
+ - 表端服务器配置修改
+ - 图片消息收发(支持无图模式, 默认外显文字提升聊天时滑动流畅度与运行压力)
+
+## TODO
+
+ - 图片管理(下载/图库)
+ - 个人主页
+ - 群聊/私聊(好友)设置
+ - 消息列表自动刷新
+ - 会话内容自动刷新
+
+
 ## 快速上手
 
 ### 1. 开发
@@ -55,7 +70,7 @@ windows
 
 你可以通过我们的[官方文档](https://iot.mi.com/vela/quickapp)熟悉和了解快应用。
 
-## config配置
+## config配置(已弃用)
 
 ### napcat_httpserver_url
 
