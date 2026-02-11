@@ -25,6 +25,20 @@ Works with [NapCatQQ](https://napneko.github.io/)
  - 消息列表自动刷新
  - 会话内容自动刷新
 
+## 性能要求
+
+*仅供参考
+
+### 最低配置
+
+REDMI Watch 6
+
+### 推荐配置
+
+Xiaomi Watch S4/eSIM/15th(最佳)
+REDMI Watch 5 eSIM(最佳)
+
+当前最佳配置为搭载XRING T1处理器的设备, 但在这些设备上仍会有在使用过程中重启的情况, 请悉知. 
 
 ## 快速上手
 
