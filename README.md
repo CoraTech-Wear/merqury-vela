@@ -5,7 +5,7 @@
   <img src="https://astrobox.online/goab/en/white.svg">
 </a>
 
-Works with [NapCat](https://napneko.github.io/)
+Works with [NapCatQQ](https://napneko.github.io/)
 
 交流: [QQ群](https://qm.qq.com/q/tpOnEHXyRa)
 
