@@ -12,7 +12,6 @@
 </template>
 
 <script>
-// import string2list from './string2list';
 import router from "@system.router";
 export default {
   props: {
