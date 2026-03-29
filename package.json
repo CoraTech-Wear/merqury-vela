@@ -9,7 +9,7 @@
   "scripts": {
     "start": "aiot start --watch --enable-protobuf true",
     "build": "aiot build --enable-protobuf",
-    "release": "aiot release --enable-jsc --enable-protobuf",
+    "release": "aiot release --enable-protobuf",
     "lint": "eslint --format codeframe --fix --ext .ux,.js src/"
   },
   "lint-staged": {
