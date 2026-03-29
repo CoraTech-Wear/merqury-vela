@@ -9,6 +9,8 @@ Works with [NapCatQQ](https://napneko.github.io/)
 
 交流: [QQ群](https://qm.qq.com/q/tpOnEHXyRa)
 
+[TG频道](https://t.me/merquryim)
+
 设计稿: [前往MasterGO](https://mastergo.com/goto/NsMqNrKF?page_id=M&file=173877994617234)
 
 <a href="https://www.bandbbs.cn/threads/22389/" target="_blank" rel="noopener noreferrer">
