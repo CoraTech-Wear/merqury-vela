@@ -7,6 +7,16 @@
   <div class="page">
     <scroll scroll-y="true" class="scroll {{ scrclass }}" bounces="true">
         <title-bar title="{{ chatTargetName }}"></title-bar>
+        <div class="top-actions">
+          <div class="refresh-btn" @click="manualRefresh">
+            <image
+              if="{{ refreshing }}"
+              class="refresh-icon"
+              src="/common/loading_reversed.gif"
+            ></image>
+            <text class="refresh-btn-text">{{ refreshing ? "刷新中..." : "刷新" }}</text>
+          </div>
+        </div>
         <scroll id="msgscroll" class="list" scroll-y="true" bounces="true" if="{{ messages }}">
             <qq-message for="{{ messages }}" msg="{{ $item }}" type="{{ chatType }}" target="{{chatTargetId}}"></qq-message>
         </scroll>
@@ -34,32 +44,122 @@ export default {
   private: {
     scrclass: "",
     messages: null,
-    hideInput: true
+    hideInput: true,
+    refreshing: false
+  },
+  scrollToBottom(delay = 800) {
+    setTimeout(() => {
+      this.$element('msgscroll').scrollTo({
+        top: 99999, // It just works.
+        behavior: "smooth"
+      })
+    }, delay) // 也许它可能需要一些渲染时间 我不知道 但好像真是
   },
   async loadMessages(count){
+    let loadedMessages = []
     if (this.chatType == 2){
-        this.messages = (await global.qq.Message.getGroupMessageHistory(this.chatTargetId, undefined, Number(count))).data.messages;
+        loadedMessages = (await global.qq.Message.getGroupMessageHistory(this.chatTargetId, undefined, Number(count))).data.messages;
     }else{
-        this.messages = (await global.qq.Message.getPrivateMessageHistory(this.chatTargetId, undefined, Number(count))).data.messages;
+        loadedMessages = (await global.qq.Message.getPrivateMessageHistory(this.chatTargetId, undefined, Number(count))).data.messages;
     }
+    this.messages = await global.qq.Message.filterLocalHiddenMessages(loadedMessages || []);
 
-    setTimeout(() => {
-        this.$element('msgscroll').scrollTo({
-            top: 99999, // It just works.
-            behavior: "smooth"
+    this.scrollToBottom()
+  },
+  createLocalSelfMessage(content, messageId) {
+    const history = this.messages || []
+    const selfMsg = history.find(item => item.self_id === item.user_id)
+    const latestMsg = history.length ? history[history.length - 1] : null
+    const selfId = selfMsg ? selfMsg.self_id : (latestMsg ? latestMsg.self_id : 0)
+    const selfName = selfMsg && selfMsg.sender && selfMsg.sender.nickname ? selfMsg.sender.nickname : "我"
+    const finalMsgId = Number(messageId) || Date.now()
+    const now = Math.floor(Date.now() / 1000)
+    const messageType = this.chatType == 2 ? "group" : "private"
+    const subType = this.chatType == 2 ? "normal" : "friend"
+
+    return {
+      self_id: selfId,
+      user_id: selfId,
+      time: now,
+      message_id: finalMsgId,
+      message_seq: finalMsgId,
+      real_id: finalMsgId,
+      real_seq: String(finalMsgId),
+      message_type: messageType,
+      sender: {
+        user_id: selfId,
+        nickname: selfName,
+        card: ""
+      },
+      raw_message: content,
+      font: 14,
+      sub_type: subType,
+      message: [
+        { type: "text", data: { text: content } }
+      ],
+      message_format: "array",
+      post_type: "message",
+      group_id: this.chatType == 2 ? this.chatTargetId : undefined
+    }
+  },
+  async refreshMessages(showToast = false) {
+    if (this.refreshing) return
+
+    this.refreshing = true
+    try {
+      const messageCount = global.config.read(c => c.messageCount)
+      await this.loadMessages(messageCount)
+      if (showToast) {
+        prompt.showToast({
+          message: "已刷新"
         })
-    }, 800) // 也许它可能需要一些渲染时间 我不知道 但好像真是
+      }
+    } catch (err) {
+      global.logger.error(`Load messages failed: ${JSON.stringify(err)}`)
+      if (showToast) {
+        prompt.showToast({
+          message: "刷新失败"
+        })
+      }
+    } finally {
+      this.refreshing = false
+    }
+  },
+  manualRefresh() {
+    this.refreshMessages(true)
   },
   async inputOK(data) {
     this.hideInput = true;
 
     if(data.detail.confirmPressed){
-      if(data.detail.content){
-        let msg = [{type: "text", data: {text: data.detail.content}}]
-        if (this.chatType == 2){
-          await global.qq.Message.sendGroupMessage(this.chatTargetId, msg);
-        }else {
-          await global.qq.Message.sendPrivateMessage(this.chatTargetId, msg)
+      const content = data.detail.content ? data.detail.content.trim() : ""
+      if(content){
+        try {
+          const msg = [{type: "text", data: {text: content}}]
+          let sendResult
+          if (this.chatType == 2){
+            sendResult = await global.qq.Message.sendGroupMessage(this.chatTargetId, msg);
+          }else {
+            sendResult = await global.qq.Message.sendPrivateMessage(this.chatTargetId, msg)
+          }
+          if (!sendResult || sendResult.status !== "ok" || sendResult.retcode !== 0) {
+            throw new Error(sendResult ? (sendResult.message || sendResult.wording || "send failed") : "send failed")
+          }
+
+          const localMessage = this.createLocalSelfMessage(content, sendResult && sendResult.data ? sendResult.data.message_id : undefined)
+          this.messages = [...(this.messages || []), localMessage]
+          this.scrollToBottom(200)
+          prompt.showToast({
+            message: "消息已发送"
+          })
+          setTimeout(() => {
+            this.refreshMessages(false)
+          }, 300)
+        } catch (err) {
+          global.logger.error(`Send message failed: ${JSON.stringify(err)}`)
+          prompt.showToast({
+            message: "发送失败"
+          })
         }
       }
       else {
@@ -84,8 +184,12 @@ export default {
   },
   onReady(){
     global.logger.log(`Load: ${this.chatTargetName} ${this.chatTargetId} ${this.chatType}`)
-    const messageCount = global.config.read(c => c.messageCount)
-    this.loadMessages(messageCount);
+    this.refreshMessages(false);
+  },
+  onShow() {
+    if (this.messages) {
+      this.refreshMessages(false)
+    }
   }
 }
 </script>
@@ -101,5 +205,33 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.top-actions {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.refresh-btn {
+  padding: 8px 16px;
+  border-radius: 99px;
+  background-color: rgba(255, 255, 255, 0.14);
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.refresh-btn-text {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.refresh-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
 }
 </style>

@@ -31,17 +31,21 @@
 <script>
 //1
 import router from "@system.router"
+import prompt from "@system.prompt"
 
 export default {
   public: {
     msgId: null,
     admin: false,
     sender: null,
+    selfId: null,
     type: null,
     target: null
   },
   private: {
-    actions: []
+    actions: [],
+    deleting: false,
+    recalling: false
   },
   onInit() {
     this.actions = [
@@ -58,9 +62,63 @@ export default {
       {
         name: "删除",
         icon: "/common/del.png",
-        action: () => {}
+        action: () => this.deleteLocally()
+      },
+      {
+        name: "撤回",
+        icon: "/common/undo.png",
+        action: () => this.recallMessage()
       }
     ]
+  },
+  async deleteLocally() {
+    if (this.deleting) return
+    this.deleting = true
+    try {
+      await global.qq.Message.hideMessageLocally(this.msgId)
+      prompt.showToast({
+        message: "已删除（仅本机）"
+      })
+      router.back()
+    } catch (error) {
+      global.logger.error(`Delete local message failed: ${JSON.stringify(error)}`)
+      prompt.showToast({
+        message: "删除失败"
+      })
+    } finally {
+      this.deleting = false
+    }
+  },
+  canRecall() {
+    return this.admin || Number(this.sender) === Number(this.selfId)
+  },
+  async recallMessage() {
+    if (this.recalling) return
+    if (!this.canRecall()) {
+      prompt.showToast({
+        message: "仅可撤回自己消息"
+      })
+      return
+    }
+
+    this.recalling = true
+    try {
+      const result = await global.qq.Message.deleteMessage(this.msgId)
+      if (!result || result.status !== "ok" || result.retcode !== 0) {
+        throw new Error(result ? (result.message || result.wording || "delete failed") : "delete failed")
+      }
+      prompt.showToast({
+        message: "已撤回"
+      })
+      router.back()
+    } catch (error) {
+      global.logger.error(`Recall message failed: ${JSON.stringify(error)}`)
+      prompt.showToast({
+        message: "撤回失败"
+      })
+    } finally {
+      this.recalling = false
+    }
   },
   async plus1() {
     try {
