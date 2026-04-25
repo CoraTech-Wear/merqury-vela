@@ -162,6 +162,7 @@ export default {
           msgId:this.msg.message_id,
           admin:role === "owner"||role === "admin",
           sender:this.msg.sender.user_id,
+          selfId:this.msg.self_id,
           type:this.type,
           target:this.target,
         }

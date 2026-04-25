@@ -3,6 +3,41 @@ import base64ToUint8Array from "../utils/b64ToArraryBuffer";
 import { sendNapCatPostRequest } from "./request";
 import { Messages, MessageType } from "./types";
 
+const LOCAL_HIDDEN_MESSAGE_IDS_PATH = "internal://files/local_hidden_message_ids.json";
+const LOCAL_HIDDEN_MESSAGE_IDS_LIMIT = 1000;
+
+async function getLocalHiddenMessageIds(): Promise<number[]> {
+    try {
+        const exists = await asyncFile.access({ uri: LOCAL_HIDDEN_MESSAGE_IDS_PATH }).catch(() => false);
+        if (!exists) {
+            return [];
+        }
+        const data = await asyncFile.readText({
+            uri: LOCAL_HIDDEN_MESSAGE_IDS_PATH,
+            encoding: "utf-8"
+        });
+        const ids = JSON.parse(data);
+        if (!Array.isArray(ids)) {
+            return [];
+        }
+        return ids.map(Number).filter(id => Number.isFinite(id) && id > 0);
+    } catch {
+        return [];
+    }
+}
+
+async function setLocalHiddenMessageIds(ids: number[]): Promise<void> {
+    const normalized = ids
+        .map(Number)
+        .filter(id => Number.isFinite(id) && id > 0)
+        .slice(-LOCAL_HIDDEN_MESSAGE_IDS_LIMIT);
+    await asyncFile.writeText({
+        uri: LOCAL_HIDDEN_MESSAGE_IDS_PATH,
+        text: JSON.stringify(normalized),
+        encoding: "utf-8"
+    });
+}
+
 export function getMessagesPreview(msg: Messages[]) {
     let preview = ""
     for (let m of msg) {
@@ -62,6 +97,35 @@ export async function getMessage(id: string){
     }));
 }
 
+export async function hideMessageLocally(message_id: number|string): Promise<void> {
+    const id = Number(message_id);
+    if (!Number.isFinite(id) || id <= 0) return;
+
+    const ids = await getLocalHiddenMessageIds();
+    if (!ids.includes(id)) {
+        ids.push(id);
+    }
+    await setLocalHiddenMessageIds(ids);
+}
+
+export async function isMessageHiddenLocally(message_id: number|string): Promise<boolean> {
+    const id = Number(message_id);
+    if (!Number.isFinite(id) || id <= 0) return false;
+
+    const ids = await getLocalHiddenMessageIds();
+    return ids.includes(id);
+}
+
+export async function filterLocalHiddenMessages<T extends { message_id: number|string }>(messages: T[]): Promise<T[]> {
+    if (!messages || !messages.length) return messages || [];
+
+    const ids = await getLocalHiddenMessageIds();
+    if (!ids.length) return messages;
+
+    const hiddenSet = new Set(ids);
+    return messages.filter(msg => !hiddenSet.has(Number(msg.message_id)));
+}
+
 export async function getRecord(file:string){
     const uri = `internal://files/cache/record/${file.replace(".amr",".mp3")}`
     if(await asyncFile.access({uri}).catch(()=>false)){
@@ -90,5 +154,11 @@ export async function sendPrivateMessage(user_id: string, message: Messages[]) {
     return (await sendNapCatPostRequest("/send_private_msg", {
         user_id,
         message
+    }));
+}
+
+export async function deleteMessage(message_id: number|string) {
+    return (await sendNapCatPostRequest("/delete_msg", {
+        message_id: Number(message_id)
     }));
 }
